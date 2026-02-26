@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как запустить KETEM EDU Backend</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #ff6b35;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        .step {
+            background: #f8f9fa;
+            border-left: 4px solid #ff6b35;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .step-number {
+            display: inline-block;
+            background: #ff6b35;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .step-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .btn {
+            display: inline-block;
+            background: #ff6b35;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px 10px 10px 0;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #e55a28;
+        }
+        .icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        ul {
+            margin: 10px 0 10px 20px;
+        }
+        li {
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Запуск KETEM EDU Backend</h1>
+        <p class="subtitle">Следуйте этим простым шагам для запуска Socket.IO сервера</p>
+
+        <div class="step">
+            <div class="step-title">
+                <span class="step-number">1</span>
+                Откройте терминал (командную строку)
+            </div>
+            <p><strong>Windows:</strong></p>
+            <ul>
+                <li>Нажмите <code>Win + R</code></li>
+                <li>Введите <code>cmd</code></li>
+                <li>Нажмите Enter</li>
+            </ul>
+            <p><strong>Mac:</strong></p>
+            <ul>
+                <li>Нажмите <code>Cmd + Space</code></li>
+                <li>Введите <code>Terminal</code></li>
+                <li>Нажмите Enter</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <div class="step-title">
+                <span class="step-number">2</span>
+                Перейдите в папку backend
+            </div>
+            <p>Выполните команды по очереди:</p>
+            <div class="code">
+cd путь/к/вашему/проекту<br>
+cd backend
+            </div>
+            <p style="margin-top: 10px; color: #666;">
+                <strong>Пример:</strong> <code>cd C:\Projects\ketem-edu\backend</code>
+            </p>
+        </div>
+
+        <div class="step">
+            <div class="step-title">
+                <span class="step-number">3</span>
+                Установите зависимости (только первый раз)
+            </div>
+            <div class="code">npm install</div>
+            <p style="margin-top: 10px; color: #666;">
+                Дождитесь окончания (может занять 1-2 минуты)
+            </p>
+        </div>
+
+        <div class="step">
+            <div class="step-title">
+                <span class="step-number">4</span>
+                Запустите сервер
+            </div>
+            <div class="code">npm start</div>
+        </div>
+
+        <div class="success">
+            <strong>✅ Успех! Вы должны увидеть:</strong>
+            <div class="code" style="margin-top: 10px;">
+🚀 Socket.IO server running on http://localhost:3000<br>
+📡 WebSocket endpoint: ws://localhost:3000
+            </div>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Важно!</strong>
+            <ul>
+                <li>НЕ закрывайте терминал с backend!</li>
+                <li>Backend должен работать одновременно с frontend</li>
+                <li>Держите оба терминала открытыми</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <div class="step-title">
+                <span class="step-number">5</span>
+                Проверка работы
+            </div>
+            <p>Откройте в браузере:</p>
+            <a href="http://localhost:3000" target="_blank" class="btn">
+                🌐 Открыть http://localhost:3000
+            </a>
+            <p style="margin-top: 15px;">Должны увидеть JSON ответ с <code>"status": "OK"</code></p>
+        </div>
+
+        <div class="success">
+            <strong>🎉 Готово!</strong>
+            <ol style="margin-left: 20px; margin-top: 10px;">
+                <li>Вернитесь на ваш сайт (http://localhost:5173)</li>
+                <li>Обновите страницу (F5)</li>
+                <li>Войдите в систему</li>
+                <li>Нажмите на кнопку чата 💬 в правом нижнем углу</li>
+                <li>Чат теперь работает в реальном времени! 🎉</li>
+            </ol>
+        </div>
+
+        <div class="error">
+            <strong>❌ Проблемы?</strong>
+            <p><strong>Ошибка: "npm: command not found"</strong></p>
+            <ul>
+                <li>Установите Node.js: <a href="https://nodejs.org/" target="_blank">nodejs.org</a></li>
+                <li>Выберите версию LTS (рекомендуемая)</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Ошибка: "Port 3000 already in use"</strong></p>
+            <ul>
+                <li>Порт 3000 занят другой программой</li>
+                <li>Закройте её или перезагрузите компьютер</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Другие ошибки:</strong></p>
+            <div class="code" style="margin-top: 10px;">
+cd backend<br>
+rm -rf node_modules package-lock.json<br>
+npm install<br>
+npm start
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee;">
+            <p style="color: #666;">
+                📖 Подробные инструкции в файле: <code>ЗАПУСТИТЬ_BACKEND.md</code>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

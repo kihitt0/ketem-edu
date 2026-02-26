@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(psql --version)",
+      "Bash(\"/c/Program Files/PostgreSQL/18/bin/psql\" --version)",
+      "Bash(PGPASSWORD=postgres \"/c/Program Files/PostgreSQL/18/bin/psql\" -U postgres -c \"SELECT version\\(\\);\")",
+      "Bash(PGPASSWORD=postgres \"/c/Program Files/PostgreSQL/18/bin/psql\" -U postgres -c \"CREATE DATABASE ketem_edu;\")",
+      "Bash(node -e \"require\\(''dotenv''\\).config\\(\\); console.log\\(''DB:'', process.env.DB_NAME, process.env.DB_USER\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(timeout 15 node server.js)",
+      "Bash(PGPASSWORD=postgres \"/c/Program Files/PostgreSQL/18/bin/psql\" -U postgres -d ketem_edu -c \"\\\\dt\")",
+      "Bash(PGPASSWORD=postgres \"/c/Program Files/PostgreSQL/18/bin/psql\" -U postgres -d ketem_edu -c \"SELECT email, role FROM users;\")",
+      "Bash(head -20 grep -n \"updateProfile\\\\|phone\\\\|date_of_birth\" d:/amirr/backend/src/controllers/user.controller.js)"
+    ]
+  }
+}
