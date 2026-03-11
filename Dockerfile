@@ -1,4 +1,5 @@
 # Stage 1: Build React app
+# Build args passed from Railway service variables
 FROM node:20-alpine AS builder
 
 WORKDIR /app
