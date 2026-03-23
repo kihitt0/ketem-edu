@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { PrivateChat } from '@/app/components/PrivateChat';
+import { LiveChat } from '@/app/components/LiveChat';
 import {
   Clock,
   CheckCircle,
@@ -888,13 +889,13 @@ export const StudentDashboard: React.FC = () => {
       </div>
 
       {/* Live Chat Widget */}
-      {/* {user && (
+      {user && (
         <LiveChat
           currentUserId={user.email}
           currentUserName={user.name}
           currentUserRole="student"
         />
-      )} */}
+      )}
 
       {/* New Application Modal */}
       {showNewAppModal && (

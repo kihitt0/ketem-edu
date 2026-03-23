@@ -3,60 +3,28 @@ import { motion } from 'motion/react';
 import { GraduationCap, MapPin, DollarSign, Calendar, Globe, Award, Users, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export const SlovakiaPage: React.FC = () => {
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+const PER_PAGE = 9;
 
-  const universities = [
-    {
-      name: 'Университет Коменского (Univerzita Komenského)',
-      city: 'Братислава',
-      tuition: 'Бесплатно на словацком / €2,000-5,000 на английском',
-      programs: ['Медицина', 'Право', 'Естественные науки', 'Педагогика'],
-      ranking: '#1 в Словакии',
-      image: 'https://images.unsplash.com/photo-1716323334534-5d88e514efd4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxDb21lbml1cyUyMFVuaXZlcnNpdHklMjBCcmF0aXNsYXZhJTIwU2xvdmFraWF8ZW58MXx8fHwxNzY5Nzk2MjIxfDA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: 'Словацкий технический университет (STU)',
-      city: 'Братислава',
-      tuition: 'Бесплатно на словацком / €2,500-4,500 на английском',
-      programs: ['Инженерия', 'IT', 'Архитектура', 'Машиностроение'],
-      ranking: '#2 в Словакии',
-      image: 'https://images.unsplash.com/photo-1715929345251-90d6cc324508?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxCcmF0aXNsYXZhJTIwU2xvdmFraWElMjB1bml2ZXJzaXR5JTIwYnVpbGRpbmd8ZW58MXx8fHwxNzY5Nzk2MjMwfDA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: 'Университет Павла Йозефа Шафарика',
-      city: 'Кошице',
-      tuition: 'Бесплатно на словацком / €2,000-4,000 на английском',
-      programs: ['Медицина', 'Право', 'Науки', 'Философия'],
-      ranking: '#3 в Словакии',
-      image: 'https://images.unsplash.com/photo-1738686001611-39b03de57797?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxTYWZhcmlrJTIwVW5pdmVyc2l0eSUyMEtvc2ljZSUyMFNsb3Zha2lhfGVufDF8fHx8MTc2OTc5NjIyMnww&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: 'Технический университет Кошице (TUKE)',
-      city: 'Кошице',
-      tuition: 'Бесплатно на словацком / €2,200-4,200 на английском',
-      programs: ['Электротехника', 'IT', 'Инженерия', 'Экономика'],
-      ranking: '#4 в Словакии',
-      image: 'https://images.unsplash.com/photo-1738686001611-39b03de57797?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxUZWNobmljYWwlMjBVbml2ZXJzaXR5JTIwS29zaWNlJTIwU2xvdmFraWF8ZW58MXx8fHwxNzY5Nzk2MjIyfDA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: 'Университет экономики в Братиславе',
-      city: 'Братислава',
-      tuition: 'Бесплатно на словацком / €3,000-5,000 на английском',
-      programs: ['Экономика', 'Бизнес', 'Менеджмент', 'Финансы'],
-      ranking: '#1 в экономике',
-      image: 'https://images.unsplash.com/photo-1747679436612-48470dda04b5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxCcmF0aXNsYXZhJTIwVW5pdmVyc2l0eSUyMEVjb25vbWljcyUyMFNsb3Zha2lhfGVufDF8fHx8MTc2OTc5NjIyM3ww&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: 'Университет Матея Бела',
-      city: 'Банска-Бистрица',
-      tuition: 'Бесплатно на словацком / €1,800-3,500 на английском',
-      programs: ['Педагогика', 'Гуманитарные науки', 'Экономика', 'Право'],
-      ranking: '#5 в Словакии',
-      image: 'https://images.unsplash.com/photo-1724672354075-4cc1deaadc99?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxNYXRlaiUyMEJlbCUyMFVuaXZlcnNpdHklMjBTbG92YWtpYXxlbnwxfHx8fDE3Njk3OTYyMjN8MA&ixlib=rb-4.1.0&q=80&w=1080'
-    }
+export const SlovakiaPage: React.FC = () => {
+  const [page, setPage] = React.useState(0);
+  React.useEffect(() => { window.scrollTo(0, 0); }, []);
+
+    const universities = [
+    { name: 'Университет Коменского', city: 'Братислава', info: 'Самый престижный и крупный университет Словакии. Лидер по медицине, праву и науке.', qs: '651-700', rank: '1 место', ranking: 'QS 651-700', tuition: 'Бесплатно на словацком', programs: [], image: 'https://oca-praga.cz/app/uploads/2022/06/621001_466305453445543_818638352_o.jpg' },
+    { name: 'СТУ в Братиславе (Slovak University of Technology)', city: 'Братислава', info: 'Один из лучших технических университетов страны с сильными программами в инженерии и архитектуре.', qs: '601-650', rank: '2 место', ranking: 'QS 601-650', tuition: 'Бесплатно на словацком', programs: [], image: 'https://studix.eu/wp-content/webp-express/webp-images/wp-content/uploads/2016/11/3-0ec7be29ec7a04b279e113b4b21e1b6d1d20d27e-e1513973551321.jpg.webp' },
+    { name: 'Университет Павла Йозефа Шафарика (Košice)', city: 'Кошице', info: 'Один из ведущих вузов страны, особенно в медицине и естественных науках', qs: '801-1000', rank: '2 место', ranking: 'QS 801-1000', tuition: 'Бесплатно на словацком', programs: [], image: 'https://go-to-slovakia.com.ua/wp-content/uploads/2015/11/%D1%83%D0%BD%D0%B8%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%82%D0%B5%D1%82-%D0%BF%D0%B0%D0%B2%D0%BB%D0%B0-%D0%B9%D0%BE%D0%B7%D0%B5%D1%84%D0%B0-%D1%88%D0%B0%D1%84%D0%B0%D1%80%D0%B8%D0%BA%D0%B0.jpg' },
+    { name: 'Жилинский университет в Жилине', city: 'Жилина', info: 'Один из сильнейших технических вузов Словакии. Особенно развитые направления: транспорт, логистика, IT и инженерия. Часто выбирают студенты, которые хотят практическую профессию с перспективой работы в Европе.', qs: '1201-1400', rank: '3-5 место', ranking: 'QS 1201-1400', tuition: 'Бесплатно на словацком', programs: ['Автоматизация', 'Коммуникационные и информационные технологии', 'Мультимедийные технологии', 'Информатика', 'Информатика и управавление'], image: 'https://educate.agency/wp-content/uploads/2023/01/university-small-11.png' },
+    { name: 'Технический университет в Кошице (ТУКЕ)', city: 'Кошице', info: 'Сильный технический вуз с направлениями IT, инженерии и экономики.', qs: '801-1000', rank: '3 место', ranking: 'QS 801-1000', tuition: 'Бесплатно на словацком', programs: [], image: 'https://comestudy.ua/wp-content/uploads/2024/12/technical-university-in-kosice-openpage-scaled.jpg' },
+    { name: 'Аграрный университет в Нитре', city: 'Нитра', info: 'Один из ведущих вузов в сфере сельского хозяйства, экологии и биотехнологий. Часто выбирается благодаря сочетанию качества образования и лёгкого поступления.', qs: '1001-1200', rank: '5-6 место', ranking: 'QS 1001-1200', tuition: 'Бесплатно на словацком', programs: [], image: 'https://slovakstudy.com/wp-content/uploads/2025/07/spu-nitra-1.jpg' },
+    { name: 'Экономический университет в Братиславе (EUBA)', city: 'Братислава', info: 'Главный вуз страны в сфере экономики, бизнеса и финансов.', qs: '1201- 1400', rank: '5-7 место', ranking: 'QS 1201- 1400', tuition: 'Бесплатно на словацком', programs: [], image: 'https://www.educationcenter.cz/assets/images/ru/blog/ekonomicheskij-universitet-v-bratislave-obzor-i-preimushhestva-obucheniya-dlya-studentov-iz-stran-sng/istoriya-i-osnovnye-fakty-EUBA.jpg' },
+    { name: 'Университет Маттея Белла (Banská Bystrica)', city: 'Банска-Бистрица', info: 'Сильные программы в экономике, туризме и международных отношениях.', qs: '1001-1200', rank: '6-8 место', ranking: 'QS 1001-1200', tuition: 'Бесплатно на словацком', programs: [], image: 'https://www.postupai.com/images/university/35/35_image.jpg.webp' },
+    { name: 'УКФ в Нитре (University of Constantine the Philosopher)', city: 'Нитра', info: 'Популярен среди иностранных студентов. Направления: педагогика, филология, дизайн.', qs: 'Не входит', rank: '8-12 место', ranking: '8-12 место', tuition: 'Бесплатно на словацком', programs: [], image: 'https://surl.lu/nxwikk' },
+    { name: 'Прешовский университет в Прешове', city: 'Прешов', info: 'Университет с широким выбором гуманитарных и педагогических программ. Популярен среди студентов за доступность поступления и относительно невысокую нагрузку.', qs: 'Не входит', rank: '10-15 место', ranking: '10-15 место', tuition: 'Бесплатно на словацком', programs: ['Английский язык и англофонные культуры', 'Английский язык и культура (в комбинации)', 'Архивоведение', 'История', 'Медиальные исследования'], image: 'https://go-to-slovakia.com.ua/wp-content/uploads/2015/10/unipo-08.jpg' },
+    { name: 'Трнавский университет', city: 'Трнава', info: 'Классический университет с направлениями права, медицины и гуманитарных наук.', qs: 'Не входит', rank: '10-12 место', ranking: '10-12 место', tuition: 'Бесплатно на словацком', programs: [], image: 'https://comestudy.ua/wp-content/uploads/2024/12/trnava-university-openpage-1024x683.jpg' },
+    { name: 'Университет Кирилла и Мефодия', city: 'Трнава', info: 'Современные направления: медиа, коммуникации, менеджмент.', qs: 'Не входит', rank: '10-14 место', ranking: '10-14 место', tuition: 'Бесплатно на словацком', programs: [], image: 'https://comestudy.ua/wp-content/uploads/2024/12/10-4.jpg' },
+    { name: 'Технический университет в Зволене', city: 'Зволен', info: 'Специализируется на экологии, лесном хозяйстве и природных ресурсах.', qs: 'Не входит', rank: '12- 15 место', ranking: '12- 15 место', tuition: 'Бесплатно на словацком', programs: [], image: 'https://go-to-slovakia.com.ua/wp-content/uploads/2015/11/tuzvo-02.jpg' },
+    { name: 'Университет Александра Дубчека в Тренчине', city: 'Тренчин', info: 'Университет прикладных наук с программами по технологиям и менеджменту.', qs: 'Не входит', rank: '12-16 место', ranking: '12-16 место', tuition: 'Бесплатно на словацком', programs: [], image: 'https://www.postupai.com/images/university/29/29_image.jpg' },
+    { name: 'Католический университет в Ружомберке', city: 'Ружомберок', info: 'Гуманитарный вуз с акцентом на педагогику, психологию и социальные науки. Подходит для студентов, ориентированных на спокойное обучение и несложное поступление.', qs: 'Не входит', rank: '15 место', ranking: '15 место', tuition: 'Бесплатно на словацком', programs: ['Англистика и американистика', 'Англистика и амереканистика - история', 'Англистика и амереканистика - философия', 'Журналистика', 'История'], image: 'https://optim.tildacdn.one/tild3831-3964-4431-b062-633930643363/-/resize/744x/-/format/webp/ku.png.webp' }
   ];
 
   return (
@@ -138,12 +106,12 @@ export const SlovakiaPage: React.FC = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {universities.map((uni, index) => (
+            {universities.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE).map((uni, index) => (
               <motion.div
-                key={index}
+                key={page * PER_PAGE + index}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.05 }}
                 whileHover={{ y: -8 }}
                 className="bg-white rounded-2xl shadow-xl overflow-hidden group"
               >
@@ -158,10 +126,8 @@ export const SlovakiaPage: React.FC = () => {
                     {uni.ranking}
                   </div>
                 </div>
-
                 <div className="p-6">
                   <h3 className="font-bold text-xl mb-3 text-gray-900 line-clamp-2">{uni.name}</h3>
-                  
                   <div className="space-y-3 mb-4">
                     <div className="flex items-center gap-2 text-gray-600">
                       <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
@@ -171,20 +137,51 @@ export const SlovakiaPage: React.FC = () => {
                       <DollarSign className="w-4 h-4 text-orange-500 flex-shrink-0" />
                       <span className="text-sm font-medium">{uni.tuition}</span>
                     </div>
-                    <div className="flex items-start gap-2 text-gray-600">
-                      <Award className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
-                      <div className="flex flex-wrap gap-1">
-                        {uni.programs.map((program, idx) => (
-                          <span key={idx} className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
-                            {program}
-                          </span>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Award className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                      <span className="text-sm font-medium">QS: {uni.qs} · {uni.rank}</span>
+                    </div>
+                    {uni.programs.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {uni.programs.slice(0,4).map((p: string, i: number) => (
+                          <span key={i} className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">{p}</span>
                         ))}
                       </div>
-                    </div>
+                    )}
+                    {uni.info && (
+                      <p className="text-sm text-gray-500 mt-2 leading-relaxed">{uni.info}</p>
+                    )}
                   </div>
                 </div>
               </motion.div>
             ))}
+          </div>
+
+          {/* Пагинация */}
+          <div className="flex items-center justify-center gap-2 mt-12">
+            <button
+              onClick={() => { setPage(p => Math.max(0, p - 1)); window.scrollTo({top: 0, behavior: 'smooth'}); }}
+              disabled={page === 0}
+              className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all"
+            >
+              ←
+            </button>
+            {Array.from({ length: Math.ceil(universities.length / PER_PAGE) }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setPage(i); window.scrollTo({top: 0, behavior: 'smooth'}); }}
+                className={`w-10 h-10 rounded-lg font-bold transition-all ${page === i ? 'bg-orange-500 text-white shadow-lg' : 'bg-white text-gray-600 border border-gray-200 hover:bg-orange-50 hover:border-orange-400'}`}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => { setPage(p => Math.min(Math.ceil(universities.length / PER_PAGE) - 1, p + 1)); window.scrollTo({top: 0, behavior: 'smooth'}); }}
+              disabled={page === Math.ceil(universities.length / PER_PAGE) - 1}
+              className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all"
+            >
+              →
+            </button>
           </div>
         </div>
       </section>

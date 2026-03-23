@@ -155,6 +155,105 @@ export const Psychology: React.FC = () => {
         </div>
       </section>
 
+      {/* Parents & Children Support */}
+      <section className="py-24 bg-gradient-to-br from-orange-50 to-amber-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500/10 border border-orange-500/20 rounded-full text-orange-500 text-sm font-medium mb-6">
+              <Users className="w-4 h-4" />
+              Семейная поддержка
+            </span>
+            <h2 className="text-5xl font-bold mb-4">
+              Поддержка для <span className="text-orange-500">родителей и детей</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Поступление за рубеж — это важный шаг для всей семьи. Мы помогаем и студентам, и их родителям пройти этот путь вместе
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            {/* For Students */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-white rounded-3xl shadow-xl overflow-hidden"
+            >
+              <div className="bg-gradient-to-br from-orange-500 to-amber-500 p-8">
+                <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                  <Brain className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-2">Для студентов</h3>
+                <p className="text-orange-100">Индивидуальная психологическая поддержка на каждом этапе</p>
+              </div>
+              <div className="p-8">
+                <ul className="space-y-4">
+                  {[
+                    'Преодоление страха перед переездом и новой жизнью',
+                    'Работа с тревогой перед экзаменами и собеседованиями',
+                    'Адаптация к новой культуре и социальной среде',
+                    'Борьба с ностальгией и тоской по дому',
+                    'Развитие уверенности и самостоятельности',
+                    'Помощь при академическом стрессе и выгорании',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-orange-500 rounded-full" />
+                      </div>
+                      <span className="text-gray-600">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+
+            {/* For Parents */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-white rounded-3xl shadow-xl overflow-hidden"
+            >
+              <div className="bg-gradient-to-br from-pink-500 to-rose-500 p-8">
+                <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                  <Heart className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-2">Для родителей</h3>
+                <p className="text-pink-100">Поддержка и информация для спокойствия всей семьи</p>
+              </div>
+              <div className="p-8">
+                <ul className="space-y-4">
+                  {[
+                    'Как отпустить ребёнка учиться за рубеж без тревоги',
+                    'Как поддерживать связь и не создавать лишнего давления',
+                    'Признаки того, что ребёнку нужна помощь',
+                    'Как правильно реагировать на трудности студента',
+                    'Финансовое планирование и снижение стресса',
+                    'Онлайн-консультации для родителей в любое время',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-pink-500 rounded-full" />
+                      </div>
+                      <span className="text-gray-600">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+
+      
+        </div>
+      </section>
+
       {/* Video Section */}
       <section className="relative bg-gradient-to-br from-[#1a1a1a] via-[#2C2C2C] to-[#1a1a1a] text-white py-24 overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjAyIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40" />
@@ -205,32 +304,11 @@ export const Psychology: React.FC = () => {
             transition={{ delay: 0.3 }}
             className="mt-12 text-center"
           >
-            <p className="text-xl text-gray-300 mb-8">
-              Наши специалисты готовы помочь вам в любое время
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-10 py-5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-lg font-bold rounded-xl transition-all shadow-2xl shadow-orange-500/30"
-            >
-              Записаться на консультацию
-            </motion.button>
+          
+           
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="mt-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl text-center"
-          >
-            <div className="flex items-center justify-center gap-3 text-gray-300">
-              <Shield className="w-6 h-6 text-orange-400" />
-              <p className="text-lg">
-                Все консультации конфиденциальны и проводятся профессиональными психологами
-              </p>
-            </div>
-          </motion.div>
+          
         </div>
       </section>
     </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider, useAuth } from '@/app/contexts/AuthContext';
 import { Header } from '@/app/components/Header';
@@ -20,14 +20,20 @@ import { ItalyPage } from '@/app/pages/ItalyPage';
 import { CzechiaPage } from '@/app/pages/CzechiaPage';
 import { SlovakiaPage } from '@/app/pages/SlovakiaPage';
 
-// Google OAuth Client ID - set in .env as VITE_GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
-// Protected Route Component
+const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation();
+  React.useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [pathname]);
+  return null;
+};
+
 const ProtectedRoute: React.FC<{ children: React.ReactNode; role?: 'student' | 'admin' }> = ({ children, role }) => {
   const { user, loading } = useAuth();
 
-  // Show loading state while checking auth
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -36,18 +42,11 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; role?: 'student' | '
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (role && user.role !== role) {
-    return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />;
-  }
-
+  if (!user) return <Navigate to="/login" replace />;
+  if (role && user.role !== role) return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />;
   return <>{children}</>;
 };
 
-// Guest Route Component - redirects to dashboard if already logged in
 const GuestRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
 
@@ -59,85 +58,36 @@ const GuestRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     );
   }
 
-  if (user) {
-    return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />;
-  }
-
+  if (user) return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />;
   return <>{children}</>;
 };
 
 const AppContent: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
+      <ScrollToTop />
       <Header />
       <main className="flex-grow">
         <Routes>
-          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/social" element={<Social />} />
           <Route path="/psychology" element={<Psychology />} />
 
-          {/* Auth routes - redirect to dashboard if logged in */}
-          <Route
-            path="/login"
-            element={
-              <GuestRoute>
-                <Login />
-              </GuestRoute>
-            }
-          />
-          <Route
-            path="/auth"
-            element={
-              <GuestRoute>
-                <AuthPage />
-              </GuestRoute>
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <GuestRoute>
-                <ForgotPasswordPage />
-              </GuestRoute>
-            }
-          />
-          <Route
-            path="/reset-password/:token"
-            element={
-              <GuestRoute>
-                <ResetPasswordPage />
-              </GuestRoute>
-            }
-          />
+          <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
+          <Route path="/auth" element={<GuestRoute><AuthPage /></GuestRoute>} />
+          <Route path="/forgot-password" element={<GuestRoute><ForgotPasswordPage /></GuestRoute>} />
+          <Route path="/reset-password/:token" element={<GuestRoute><ResetPasswordPage /></GuestRoute>} />
 
-          {/* Protected routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute role="student">
-                <StudentDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute role="admin">
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/dashboard" element={<ProtectedRoute role="student"><StudentDashboard /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>} />
 
-          {/* Country pages */}
           <Route path="/china" element={<ChinaPage />} />
           <Route path="/italy" element={<ItalyPage />} />
           <Route path="/czechia" element={<CzechiaPage />} />
           <Route path="/slovakia" element={<SlovakiaPage />} />
 
-          {/* Catch all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
@@ -147,7 +97,6 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  // Wrap with GoogleOAuthProvider only if client ID is available
   const content = (
     <Router>
       <AuthProvider>
@@ -164,8 +113,6 @@ const App: React.FC = () => {
     );
   }
 
-  // If no Google Client ID, render without OAuth provider
-  // Google login will show an error message
   return content;
 };
 

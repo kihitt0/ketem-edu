@@ -15,12 +15,12 @@ export function AboutPage() {
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
               О{" "}
               <span className="text-[#FF6B35]">
-                KETEM education
+                Ketem education
               </span>
             </h1>
             <p className="text-xl text-gray-600">
               Мы помогаем талантливым студентам получить
-              образование мирового уровня с 2015 года
+              образование мирового уровня с 2022 года
             </p>
           </motion.div>
         </div>
@@ -75,9 +75,9 @@ export function AboutPage() {
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               {[
-                { value: "98%", label: "Успешных поступлений" },
+                { value: "99%", label: "Успешных поступлений" },
                 {
-                  value: "5000+",
+                  value: "1500+",
                   label: "Довольных студентов",
                 },
                 { value: "50+", label: "Стран-партнеров" },

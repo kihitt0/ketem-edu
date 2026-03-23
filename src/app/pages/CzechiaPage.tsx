@@ -15,7 +15,7 @@ export const CzechiaPage: React.FC = () => {
       tuition: 'Бесплатно на чешском / €4,000-8,000 на английском',
       programs: ['Медицина', 'Право', 'Естественные науки', 'Гуманитарные науки'],
       ranking: '#1 в Чехии',
-      image: 'https://images.unsplash.com/photo-1766226083712-be8e02074247?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxDaGFybGVzJTIwVW5pdmVyc2l0eSUyMFByYWd1ZSUyMGNhbXB1c3xlbnwxfHx8fDE3Njk3OTYyMTl8MA&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://world-study.kz/wp-content/uploads/2025/04/ryebol9.jpeg'
     },
     {
       name: 'Чешский технический университет (ČVUT)',
@@ -23,7 +23,7 @@ export const CzechiaPage: React.FC = () => {
       tuition: 'Бесплатно на чешском / €3,000-7,000 на английском',
       programs: ['Инженерия', 'IT', 'Архитектура', 'Транспорт'],
       ranking: '#2 в Чехии',
-      image: 'https://images.unsplash.com/photo-1766226083712-be8e02074247?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxDemVjaCUyMFRlY2huaWNhbCUyMFVuaXZlcnNpdHklMjBQcmFndWV8ZW58MXx8fHwxNzY5Nzk2MjE5fDA&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ__tfrtH9yn7KlXYuykXBAtNDd-Ylgj_x3Hw&s'
     },
     {
       name: 'Технический университет Брно (VUT)',
@@ -31,7 +31,7 @@ export const CzechiaPage: React.FC = () => {
       tuition: 'Бесплатно на чешском / €2,500-6,000 на английском',
       programs: ['Машиностроение', 'Электротехника', 'IT', 'Бизнес'],
       ranking: '#3 в Чехии',
-      image: 'https://images.unsplash.com/photo-1611864051900-26bbdb68205d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxCcm5vJTIwVW5pdmVyc2l0eSUyMFRlY2hub2xvZ3klMjBDemVjaHxlbnwxfHx8fDE3Njk3OTYyMjB8MA&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://prag-study.com/photos/1/Photos/763.jpg'
     },
     {
       name: 'Университет Масарика (Masarykova univerzita)',
@@ -39,7 +39,7 @@ export const CzechiaPage: React.FC = () => {
       tuition: 'Бесплатно на чешском / €3,500-6,500 на английском',
       programs: ['Медицина', 'Право', 'Экономика', 'IT'],
       ranking: '#4 в Чехии',
-      image: 'https://images.unsplash.com/photo-1587590624341-f4e9ebfb2bb7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxNYXNhcnlrJTIwdW5pdmVyc2l0eSUyMEJybm8lMjBidWlsZGluZ3xlbnwxfHx8fDE3Njk3OTYyMzB8MA&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://images.gostudy.cz/images/2014/12/Masarikov.jpg'
     },
     {
       name: 'Университет экономики в Праге (VŠE)',
@@ -47,7 +47,7 @@ export const CzechiaPage: React.FC = () => {
       tuition: 'Бесплатно на чешском / €4,000-7,000 на английском',
       programs: ['Экономика', 'Бизнес', 'Менеджмент', 'Финансы'],
       ranking: '#1 в экономике',
-      image: 'https://images.unsplash.com/photo-1605538794065-dd2671432ca7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxQcmFndWUlMjBVbml2ZXJzaXR5JTIwRWNvbm9taWNzJTIwYnVpbGRpbmd8ZW58MXx8fHwxNzY5Nzk2MjIwfDA&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://oca-praga.cz/app/uploads/2022/01/vysshaya-shkola-ekonomiki-nf.jpg'
     },
     {
       name: 'Университет Палацкого (Univerzita Palackého)',
@@ -55,7 +55,7 @@ export const CzechiaPage: React.FC = () => {
       tuition: 'Бесплатно на чешском / €2,000-5,000 на английском',
       programs: ['Медицина', 'Науки', 'Педагогика', 'Философия'],
       ranking: '#5 в Чехии',
-      image: 'https://images.unsplash.com/photo-1609874933160-164e8c00489c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxPbG9tb3VjJTIwQ3plY2glMjBoaXN0b3JpYyUyMGJ1aWxkaW5nfGVufDF8fHx8MTc2OTc5NjIzMHww&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://prag-study.com/photos/1/gallery/%D0%92%D1%83%D0%B7%D1%8B/5dbc18c3ddd48.jpg'
     }
   ];
 

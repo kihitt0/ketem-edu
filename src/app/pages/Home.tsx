@@ -44,10 +44,6 @@ export const Home: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="mb-6"
             >
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500/10 border border-orange-500/20 rounded-full text-orange-400 text-sm font-medium backdrop-blur-sm">
-                <Sparkles className="w-4 h-4" />
-                Премиум консультирование
-              </span>
             </motion.div>
 
             <motion.h1
@@ -69,7 +65,7 @@ export const Home: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed"
             >
-              KETEM edu - эксклюзивное сопровождение в поступлении в топовые университеты Европы. 
+              Ketem education - эксклюзивное сопровождение в поступлении в топовые университеты Европы. 
               Индивидуальная стратегия для вашего успеха.
             </motion.p>
             
@@ -79,13 +75,7 @@ export const Home: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <Link
-                to="/login"
-                className="group relative px-10 py-5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-xl shadow-orange-500/20 hover:shadow-2xl hover:shadow-orange-500/40 hover:scale-105"
-              >
-                <span className="text-lg font-semibold">Начать путь</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              
               <Link
                 to="/about"
                 className="px-10 py-5 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white border-2 border-white/10 hover:border-white/20 rounded-xl transition-all duration-300 text-lg font-semibold hover:scale-105"
@@ -125,7 +115,7 @@ export const Home: React.FC = () => {
             {[
               {
                 icon: <GraduationCap className="w-10 h-10" />,
-                title: 'Элитные университеты',
+                title: 'Топовые университеты',
                 description: 'Поступление в университеты топ-100',
                 color: 'from-orange-500 to-amber-500'
               },
@@ -143,7 +133,7 @@ export const Home: React.FC = () => {
               },
               {
                 icon: <Users className="w-10 h-10" />,
-                title: 'VIP сопровождение',
+                title: 'Сопровождение',
                 description: 'Личный менеджер 24/7',
                 color: 'from-yellow-500 to-orange-500'
               }
@@ -195,9 +185,9 @@ export const Home: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { number: '5000+', label: 'Успешных студентов', icon: <Users className="w-8 h-8" /> },
-              { number: '200+', label: 'Партнерских университетов', icon: <GraduationCap className="w-8 h-8" /> },
-              { number: '95%', label: 'Успешных поступлений', icon: <TrendingUp className="w-8 h-8" /> }
+              { number: '1500+', label: 'Успешных студентов', icon: <Users className="w-8 h-8" /> },
+              { number: '50+', label: 'Партнерских университетов', icon: <GraduationCap className="w-8 h-8" /> },
+              { number: '99%', label: 'Успешных поступлений', icon: <TrendingUp className="w-8 h-8" /> }
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -300,51 +290,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative py-24 bg-gradient-to-br from-[#2C2C2C] to-[#1a1a1a] text-white overflow-hidden">
-        <div className="absolute inset-0">
-          <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-500/20 rounded-full blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.3, 0.2],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-        </div>
-
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Готовы изменить <span className="bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">свою жизнь?</span>
-            </h2>
-            <p className="text-xl md:text-2xl text-gray-300 mb-10">
-              Начните свой путь к международному образованию уже сегодня
-            </p>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                to="/login"
-                className="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xl font-bold rounded-xl transition-all duration-300 shadow-2xl shadow-orange-500/30"
-              >
-                Получить консультацию
-                <ArrowRight className="w-6 h-6" />
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      
     </div>
   );
 };

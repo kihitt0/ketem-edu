@@ -15,7 +15,7 @@ export const ChinaPage: React.FC = () => {
       tuition: '3,000 - 5,000 USD/год',
       programs: ['Инженерия', 'Бизнес', 'Медицина', 'IT'],
       ranking: '#1 в Китае',
-      image: 'https://images.unsplash.com/photo-1566796096958-94dacebdcb6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxCZWlqaW5nJTIwdW5pdmVyc2l0eSUyMGJ1aWxkaW5nJTIwQ2hpbmF8ZW58MXx8fHwxNzY5Nzk2MjI3fDA&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://world-study.kz/wp-content/uploads/2025/06/ws-pekin-1.jpg'
     },
     {
       name: 'Университет Цинхуа (清华大学)',
@@ -23,7 +23,7 @@ export const ChinaPage: React.FC = () => {
       tuition: '3,500 - 6,000 USD/год',
       programs: ['Инженерия', 'Компьютерные науки', 'Архитектура'],
       ranking: '#2 в Китае',
-      image: 'https://images.unsplash.com/photo-1742194801379-ca7b698656a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxUc2luZ2h1YSUyMFVuaXZlcnNpdHklMjBCZWlqaW5nJTIwY2FtcHVzfGVufDF8fHx8MTc2OTc5NjIxNXww&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://world-study.kz/wp-content/uploads/2025/06/ws-ts-q.jpg'
     },
     {
       name: 'Фуданьский университет (复旦大学)',
@@ -31,7 +31,7 @@ export const ChinaPage: React.FC = () => {
       tuition: '3,200 - 5,500 USD/год',
       programs: ['Экономика', 'Медицина', 'Журналистика', 'Международные отношения'],
       ranking: '#3 в Китае',
-      image: 'https://images.unsplash.com/photo-1664213034187-fb331960c99a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxGdWRhbiUyMFVuaXZlcnNpdHklMjBTaGFuZ2hhaSUyMGNhbXB1c3xlbnwxfHx8fDE3Njk3OTYyMTV8MA&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://worldofeducation.ru/2016/Fudan%20University%20building.jpg'
     },
     {
       name: 'Шанхайский университет Цзяо Тун (上海交通大学)',
@@ -39,7 +39,7 @@ export const ChinaPage: React.FC = () => {
       tuition: '3,000 - 5,800 USD/год',
       programs: ['Инженерия', 'Бизнес', 'Медицина', 'Биотехнологии'],
       ranking: '#4 в Китае',
-      image: 'https://images.unsplash.com/photo-1719704964785-64cc5da1812c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxTaGFuZ2hhaSUyMEppYW8lMjBUb25nJTIwVW5pdmVyc2l0eXxlbnwxfHx8fDE3Njk3OTYyMTV8MA&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://mymandarin.ru/wp-content/uploads/2025/04/33976729daihocthuonghai-1711436507712.jpg'
     },
     {
       name: 'Чжэцзянский университет (浙江大学)',
@@ -47,7 +47,7 @@ export const ChinaPage: React.FC = () => {
       tuition: '2,800 - 5,000 USD/год',
       programs: ['IT', 'Инженерия', 'Сельское хозяйство', 'Медицина'],
       ranking: '#5 в Китае',
-      image: 'https://images.unsplash.com/photo-1732511154676-f5adfa1a00f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxaaGVqaWFuZyUyMFVuaXZlcnNpdHklMjBIYW5nemhvdSUyMENoaW5hfGVufDF8fHx8MTc2OTc5NjIxNnww&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://grant.chilan.ru/wp-content/themes/yootheme/cache/zhejiang-uni-campus-ef063bc3.jpeg'
     },
     {
       name: 'Нанкинский университет (南京大学)',
@@ -55,7 +55,7 @@ export const ChinaPage: React.FC = () => {
       tuition: '2,500 - 4,500 USD/год',
       programs: ['Физика', 'Химия', 'Литература', 'История'],
       ranking: '#6 в Китае',
-      image: 'https://images.unsplash.com/photo-1764777447643-14d5922439ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxOYW5qaW5nJTIwQ2hpbmElMjBoaXN0b3JpYyUyMGFyY2hpdGVjdHVyZXxlbnwxfHx8fDE3Njk3OTYyMjd8MA&ixlib=rb-4.1.0&q=80&w=1080'
+      image: 'https://rustudy.uz/wp-content/uploads/2024/12/825_585_nanjing-university-of-finance-economics-3.jpg'
     }
   ];
 
