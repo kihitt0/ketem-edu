@@ -20,7 +20,6 @@ export const SocialPage: React.FC = () => {
       name: 'WhatsApp',
       icon: <Phone className="w-6 h-6" />,
       handle: '+7 775 883 7090',
-      followers: 'Онлайн',
       description: 'Прямая связь с менеджерами и быстрые консультации',
       color: 'from-green-500 to-emerald-600',
       bg: '#f0fdf4',
@@ -31,7 +30,6 @@ export const SocialPage: React.FC = () => {
       name: 'Telegram',
       icon: <MessageCircle className="w-6 h-6" />,
       handle: '@ketemedu_channel',
-      followers: '20K',
       description: 'Ежедневные новости, дедлайны и быстрая поддержка',
       color: 'from-blue-400 to-cyan-500',
       bg: '#eff6ff',
@@ -42,7 +40,6 @@ export const SocialPage: React.FC = () => {
       name: 'YouTube',
       icon: <Youtube className="w-6 h-6" />,
       handle: 'KETEM edu',
-      followers: '15K',
       description: 'Видео-гайды, интервью с экспертами и студентами',
       color: 'from-red-500 to-rose-600',
       bg: '#fff1f2',
@@ -146,8 +143,8 @@ export const SocialPage: React.FC = () => {
             className="grid grid-cols-3 gap-4 mt-8 p-6 bg-gray-50 rounded-2xl"
           >
             {[
-              { value: '48K+', label: 'Подписчиков', icon: '👥' },
-              { value: '500+', label: 'Студентов поступило', icon: '🎓' },
+              { value: '13K+', label: 'Подписчиков', icon: '👥' },
+              { value: '1500+', label: 'Студентов поступило', icon: '🎓' },
               { value: '24/7', label: 'Поддержка', icon: '💬' },
             ].map((s, i) => (
               <div key={i} className="text-center">
