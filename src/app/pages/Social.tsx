@@ -19,7 +19,6 @@ export const Social: React.FC = () => {
       name: 'WhatsApp',
       icon: <Phone className="w-7 h-7" />,
       handle: '+7 775 883 7090',
-      followers: '24/7',
       description: 'Пиши прямо сейчас — ответим мгновенно и поможем с любым вопросом',
       link: 'https://wa.me/87758837090',
       emoji: '💬',
@@ -28,7 +27,6 @@ export const Social: React.FC = () => {
       name: 'Telegram',
       icon: <MessageCircle className="w-7 h-7" />,
       handle: '@ketemedu_channel',
-      followers: '20K',
       description: 'Новости, дедлайны, секретные фишки поступления — каждый день',
       link: '#',
       emoji: '✈️',
@@ -37,7 +35,6 @@ export const Social: React.FC = () => {
       name: 'YouTube',
       icon: <Youtube className="w-7 h-7" />,
       handle: 'KETEM edu',
-      followers: '15K',
       description: 'Видео-гайды, интервью со студентами и разборы университетов',
       link: '#',
       emoji: '🎬',
@@ -82,12 +79,12 @@ export const Social: React.FC = () => {
  
           <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}
             style={{ fontSize: 20, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6, marginBottom: 48 }}>
-            48K+ студентов уже с нами. Присоединяйся и получай инсайды по поступлению каждый день.
+            13K+ студентов уже с нами. Присоединяйся и получай инсайды по поступлению каждый день.
           </motion.p>
  
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
             style={{ display: 'flex', justifyContent: 'center', gap: 40, flexWrap: 'wrap' }}>
-            {[['48K+', 'Подписчиков'], ['500+', 'Поступило'], ['4', 'Платформы']].map(([v, l], i) => (
+            {[['13K+', 'Подписчиков'], ['1500+', 'Поступило'], ['4', 'Платформы']].map(([v, l], i) => (
               <div key={i} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: 34, fontWeight: 900, background: 'linear-gradient(135deg, #FF6B35, #FFB800)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{v}</div>
                 <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', marginTop: 2 }}>{l}</div>
@@ -192,7 +189,6 @@ export const Social: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="text-center mb-10" style={{ color: "#fff" }}>
             <h2 className="text-3xl font-bold mb-2" style={{ color: "#fff" }}>Наше <span className="text-orange-500">сообщество</span></h2>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 15 }}>Тысячи студентов уже с нами</p>
           </motion.div>
  
           <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
