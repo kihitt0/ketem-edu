@@ -112,20 +112,6 @@ export function AuthPage() {
             </div>
           </div>
 
-          {/* Demo credentials */}
-          <div className="bg-orange-50 border border-[#FF6B35] rounded-lg p-4 mb-6 text-sm">
-            <p className="font-semibold text-gray-900 mb-2">
-              Демо учетные данные:
-            </p>
-            <p className="text-gray-700">
-              <strong>Студент:</strong> student@study.com /
-              student123
-            </p>
-            <p className="text-gray-700">
-              <strong>Админ:</strong> admin@study.com / admin123
-            </p>
-          </div>
-
           <form onSubmit={handleSubmit} className="space-y-6">
             {!isLogin && (
               <div>
