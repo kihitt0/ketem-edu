@@ -186,19 +186,6 @@ export const ChinaPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="bg-gradient-to-r from-orange-500 to-amber-500 rounded-3xl p-12 text-center text-white shadow-2xl">
-            <h2 className="text-4xl font-bold mb-4">Готовы начать своё обучение в Китае?</h2>
-            <p className="text-xl mb-8 opacity-90">Наши эксперты помогут подобрать университет и программу специально для вас</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/login" className="bg-white text-orange-500 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all shadow-lg">Получить консультацию</Link>
-              <Link to="/about" className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold hover:bg-white/10 transition-all">Узнать больше</Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 };
