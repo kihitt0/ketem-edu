@@ -112,13 +112,6 @@ export const Login: React.FC = () => {
                 </div>
               </div>
 
-              {/* Demo Credentials */}
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-                <p className="text-sm font-semibold text-orange-900 mb-2">Демо-доступ:</p>
-                <p className="text-xs text-orange-800">Студент: student@study.com / student123</p>
-                <p className="text-xs text-orange-800">Админ: admin@study.com / admin123</p>
-              </div>
-
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
                 {!isLogin && (
