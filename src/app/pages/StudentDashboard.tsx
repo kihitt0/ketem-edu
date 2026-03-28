@@ -304,7 +304,6 @@ const DocHubCategories: React.FC<{
     { id: 'recommendation', label: '👤 Рекомендательное письмо', types: ['recommendation'] },
     { id: 'language', label: '🌐 Языковой сертификат', types: ['language_certificate', 'ielts', 'toefl'] },
     { id: 'financial', label: '💰 Финансовые документы', types: ['financial'] },
-    { id: 'other', label: '📎 Другое', types: ['other', 'photo'] },
   ];
   const [activeCat, setActiveCat] = useState('all');
   const filteredDocs = activeCat === 'all' ? myDocuments : myDocuments.filter(d => (allCats.find(c => c.id === activeCat)?.types || []).includes(d.document_type));
