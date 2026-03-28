@@ -272,35 +272,39 @@ export const ItalyPage: React.FC = () => {
                           initial={{ opacity: 0, y: 30 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.05 }}
-                          whileHover={{ y: -5 }}
-                          className="bg-white rounded-2xl shadow-md overflow-hidden group border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all"
+                          whileHover={{ y: -8 }}
+                          className="bg-white rounded-2xl shadow-xl overflow-hidden group"
                         >
-                          <div className="p-6">
-                            <div className="flex items-start justify-between mb-3">
-                              <div className="flex-1 min-w-0">
-                                <h3 className="font-bold text-lg mb-1 text-gray-900 leading-tight">{uni.name}</h3>
-                                <div className="flex items-center gap-1 text-gray-500 text-sm">
-                                  <MapPin className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
-                                  {uni.city}
-                                </div>
-                              </div>
-                              <span className="ml-3 flex-shrink-0 bg-orange-50 text-orange-600 border border-orange-100 px-2.5 py-1 rounded-full text-xs font-bold whitespace-nowrap">
-                                {uni.ranking}
-                              </span>
+                          <div className="relative h-48 overflow-hidden">
+                            <img
+                              src={uni.image}
+                              alt={uni.name}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            />
+                            <div className="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+                              <Star className="w-4 h-4" />
+                              {uni.ranking}
                             </div>
-                            <div className="space-y-2 mb-4">
+                          </div>
+                          <div className="p-6">
+                            <h3 className="font-bold text-xl mb-3 text-gray-900 line-clamp-2">{uni.name}</h3>
+                            <div className="space-y-3 mb-4">
+                              <div className="flex items-center gap-2 text-gray-600">
+                                <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                                <span className="text-sm">{uni.city}</span>
+                              </div>
                               <div className="flex items-center gap-2 text-gray-600">
                                 <DollarSign className="w-4 h-4 text-orange-500 flex-shrink-0" />
                                 <span className="text-sm font-medium">{uni.tuition}</span>
                               </div>
                               <div className="flex items-center gap-2 text-gray-600">
                                 <Award className="w-4 h-4 text-orange-500 flex-shrink-0" />
-                                <span className="text-sm">QS: {uni.qs} · {uni.rank}</span>
+                                <span className="text-sm font-medium">QS: {uni.qs} · {uni.rank}</span>
                               </div>
+                              {uni.info && (
+                                <p className="text-sm text-gray-500 mt-2 leading-relaxed">{uni.info}</p>
+                              )}
                             </div>
-                            {uni.info && (
-                              <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">{uni.info}</p>
-                            )}
                           </div>
                         </motion.div>
                       ))}
