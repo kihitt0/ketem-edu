@@ -274,22 +274,35 @@ export const Psychology: React.FC = () => {
     </div>
 
     {/* Video */}
-    <div className="relative">
-      <div className="bg-gradient-to-br from-[#3a3a3a] to-[#2a2a2a] p-6 md:p-8 rounded-3xl shadow-2xl border border-white/10">
-        
-        {/* ВАЖНО: убрали paddingBottom и сделали фикс высоту */}
-        <div className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-          <iframe
-            className="w-full h-full"
-            src="https://www.youtube.com/embed/VRcOn9PPyes?rel=0"
-            title="Видео о психологической поддержке"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
+    <section className="relative bg-gradient-to-br from-[#1a1a1a] via-[#2C2C2C] to-[#1a1a1a] text-white py-24 overflow-hidden">
+  
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    
+    <div className="text-center mb-12">
+      <h2 className="text-5xl font-bold mb-4">
+        Видео о{" "}
+        <span className="bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">
+          психологической поддержке
+        </span>
+      </h2>
+      <p className="text-xl text-gray-300">
+        Узнайте больше о том, как мы помогаем студентам
+      </p>
+    </div>
 
+    <div className="bg-[#2a2a2a] p-6 rounded-3xl">
+      <div className="w-full h-[500px] rounded-2xl overflow-hidden">
+        <iframe
+          className="w-full h-full"
+          src="https://www.youtube.com/embed/VRcOn9PPyes"
+          title="Видео"
+          allowFullScreen
+        />
       </div>
+    </div>
+
+  </div>
+</section>
 
       {/* Декор */}
       <div className="absolute -top-6 -left-6 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl" />
