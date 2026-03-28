@@ -33,7 +33,8 @@ import {
   Check,
   Lock,
   TrendingUp,
-  Bell
+  Bell,
+  Shield
 } from 'lucide-react';
 
 const ACCENT = '#FF6B35';
@@ -284,6 +285,79 @@ const PsychTestModal: React.FC<{ onClose: () => void; onComplete: () => void }> 
   );
 };
 
+// ─── DOC HUB CATEGORIES (needs useState, so extracted) ────────────────────────
+const DocHubCategories: React.FC<{
+  myDocuments: UserDocument[];
+  getDocTypeName: (t: string) => string;
+  getDocStatusBadge: (s: string) => React.ReactNode;
+  handleDeleteDocument: (id: string) => void;
+  setShowUploadModal: (v: boolean) => void;
+  ACCENT: string;
+}> = ({ myDocuments, getDocTypeName, getDocStatusBadge, handleDeleteDocument, setShowUploadModal, ACCENT }) => {
+  const allCats = [
+    { id: 'all', label: 'Все', types: [] as string[] },
+    { id: 'passport', label: '🪪 Паспорт', types: ['passport', 'id_card', 'birth_certificate'] },
+    { id: 'education', label: '🎓 Диплом/Аттестат', types: ['diploma', 'transcript', 'attestat'] },
+    { id: 'transcript', label: '📄 Транскрипт', types: ['transcript'] },
+    { id: 'cv', label: '📋 CV/Резюме', types: ['cv'] },
+    { id: 'motivation', label: '✉️ Мотивационное письмо', types: ['motivation_letter'] },
+    { id: 'recommendation', label: '👤 Рекомендательное письмо', types: ['recommendation'] },
+    { id: 'language', label: '🌐 Языковой сертификат', types: ['language_certificate', 'ielts', 'toefl'] },
+    { id: 'financial', label: '💰 Финансовые документы', types: ['financial'] },
+    { id: 'other', label: '📎 Другое', types: ['other', 'photo'] },
+  ];
+  const [activeCat, setActiveCat] = useState('all');
+  const filteredDocs = activeCat === 'all' ? myDocuments : myDocuments.filter(d => (allCats.find(c => c.id === activeCat)?.types || []).includes(d.document_type));
+
+  return (
+    <>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
+        {allCats.map(cat => {
+          const count = cat.id === 'all' ? myDocuments.length : myDocuments.filter(d => cat.types.includes(d.document_type)).length;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCat(cat.id)}
+              style={{ background: activeCat === cat.id ? ACCENT : '#F5F5F8', border: 'none', borderRadius: 20, padding: '6px 14px', color: activeCat === cat.id ? '#fff' : '#555', fontWeight: activeCat === cat.id ? 600 : 400, cursor: 'pointer', fontSize: 12 }}
+            >
+              {cat.label} ({count})
+            </button>
+          );
+        })}
+      </div>
+
+      {filteredDocs.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '40px 20px', color: '#bbb' }}>
+          <FileText size={40} color="#ddd" style={{ margin: '0 auto 12px', display: 'block' }} />
+          <div style={{ marginBottom: 16, fontSize: 14 }}>Нет документов в этой категории</div>
+          <button
+            onClick={() => setShowUploadModal(true)}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: ACCENT, border: 'none', borderRadius: 10, padding: '9px 18px', color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: 13 }}
+          >
+            <Upload size={14} /> Загрузить
+          </button>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {filteredDocs.map(doc => (
+            <div key={doc.id} style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#F9FAFB', borderRadius: 12, padding: '12px 16px', border: '1px solid #F0F0F0' }}>
+              <div style={{ width: 38, height: 38, background: '#EFF6FF', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, color: '#3B82F6', flexShrink: 0 }}>
+                {doc.original_name.split('.').pop()?.toUpperCase()}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 600, color: '#1a1a2e', fontSize: 14 }}>{getDocTypeName(doc.document_type)}</div>
+                <div style={{ color: '#999', fontSize: 12, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.original_name} • {(doc.file_size / 1024).toFixed(0)} KB</div>
+              </div>
+              {getDocStatusBadge(doc.status)}
+              <button onClick={() => handleDeleteDocument(doc.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ccc', padding: 4, flexShrink: 0 }}><Trash2 size={14} /></button>
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+};
+
 export const StudentDashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -350,6 +424,7 @@ export const StudentDashboard: React.FC = () => {
   }, [user, navigate]);
 
   const completeStep = (id: string) => {
+    if (completedSteps.includes(id)) return;
     const updated = [...completedSteps, id];
     setCompletedSteps(updated);
     localStorage.setItem(`soara_steps_${user!.email}`, JSON.stringify(updated));
@@ -893,143 +968,123 @@ export const StudentDashboard: React.FC = () => {
         {/* ── DOCUMENT HUB ── */}
         {activeSection === 'documents' && (
           <div style={{ padding: '28px 32px' }}>
-            <div style={{ marginBottom: 24 }}>
-              <h1 style={{ margin: 0, fontSize: 26, fontWeight: 800, color: '#1a1a2e' }}>Document Hub</h1>
-              <p style={{ margin: '4px 0 0', color: '#888' }}>Все ваши документы в одном месте — загружайте по категориям</p>
+            {/* Header */}
+            <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div>
+                <h1 style={{ margin: 0, fontSize: 26, fontWeight: 800, color: '#1a1a2e' }}>Document Hub</h1>
+                <p style={{ margin: '4px 0 0', color: '#888' }}>Все документы для поступления в одном месте</p>
+              </div>
+              <div style={{ background: '#F5F5F8', border: '1px solid #E5E7EB', borderRadius: 20, padding: '6px 14px', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#888' }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: myDocuments.length > 0 && myDocuments.filter(d => d.status === 'approved').length === myDocuments.length ? '#10B981' : '#E5E7EB' }} />
+                {myDocuments.length > 0 ? Math.round((myDocuments.filter(d => d.status === 'approved').length / myDocuments.length) * 100) : 0}% готовность
+              </div>
             </div>
 
-            {/* Category Cards */}
-            {(() => {
-              const docCategories = [
-                {
-                  id: 'identity',
-                  label: 'Удостоверение личности',
-                  emoji: '🪪',
-                  color: '#3B82F6',
-                  bg: '#EFF6FF',
-                  types: ['passport', 'id_card', 'birth_certificate'],
-                  typeLabels: { passport: 'Паспорт (загранпаспорт)', id_card: 'Удостоверение личности (ИИН)', birth_certificate: 'Свидетельство о рождении' },
-                  description: 'Основные документы, удостоверяющие личность'
-                },
-                {
-                  id: 'education',
-                  label: 'Документы об образовании',
-                  emoji: '🎓',
-                  color: '#10B981',
-                  bg: '#ECFDF5',
-                  types: ['diploma', 'transcript', 'attestat'],
-                  typeLabels: { diploma: 'Диплом о высшем образовании', transcript: 'Транскрипт / Приложение к диплому', attestat: 'Аттестат об окончании школы' },
-                  description: 'Аттестаты, дипломы и академические справки'
-                },
-                {
-                  id: 'language',
-                  label: 'Языковые сертификаты',
-                  emoji: '🌐',
-                  color: '#8B5CF6',
-                  bg: '#F5F3FF',
-                  types: ['language_certificate', 'ielts', 'toefl'],
-                  typeLabels: { language_certificate: 'Языковой сертификат', ielts: 'IELTS', toefl: 'TOEFL / ЕГЭ по языку' },
-                  description: 'IELTS, TOEFL и другие языковые подтверждения'
-                },
-                {
-                  id: 'application',
-                  label: 'Документы для поступления',
-                  emoji: '📝',
-                  color: '#F59E0B',
-                  bg: '#FFFBEB',
-                  types: ['motivation_letter', 'recommendation', 'cv'],
-                  typeLabels: { motivation_letter: 'Мотивационное письмо', recommendation: 'Рекомендательное письмо', cv: 'CV / Резюме' },
-                  description: 'Мотивационные и рекомендательные письма, CV'
-                },
-                {
-                  id: 'photo',
-                  label: 'Фотографии',
-                  emoji: '📷',
-                  color: '#EC4899',
-                  bg: '#FDF2F8',
-                  types: ['photo'],
-                  typeLabels: { photo: 'Фото 3×4 (документальное)' },
-                  description: 'Паспортные фото для документов'
-                },
-                {
-                  id: 'other',
-                  label: 'Прочие документы',
-                  emoji: '📎',
-                  color: '#6B7280',
-                  bg: '#F9FAFB',
-                  types: ['other'],
-                  typeLabels: { other: 'Другое' },
-                  description: 'Медицинские справки, страховки и другое'
-                },
-              ];
-
-              return (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                  {docCategories.map(cat => {
-                    const catDocs = myDocuments.filter(d => cat.types.includes(d.document_type));
-                    return (
-                      <div key={cat.id} style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${cat.bg === '#F9FAFB' ? '#E5E7EB' : cat.bg}`, overflow: 'hidden' }}>
-                        {/* Category Header */}
-                        <div style={{ background: cat.bg, padding: '16px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                            <span style={{ fontSize: 24 }}>{cat.emoji}</span>
-                            <div>
-                              <div style={{ fontWeight: 700, fontSize: 15, color: '#1a1a2e' }}>{cat.label}</div>
-                              <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>{cat.description}</div>
-                            </div>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                            {catDocs.length > 0 && (
-                              <span style={{ background: cat.color, color: '#fff', borderRadius: 20, padding: '2px 10px', fontSize: 12, fontWeight: 600 }}>
-                                {catDocs.length} файл{catDocs.length > 1 ? 'а' : ''}
-                              </span>
-                            )}
-                            <button
-                              onClick={() => { setSelectedDocType(cat.types[0]); setShowUploadModal(true); }}
-                              style={{ display: 'flex', alignItems: 'center', gap: 6, background: cat.color, border: 'none', borderRadius: 10, padding: '8px 14px', color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: 13 }}
-                            >
-                              <Upload size={14} /> Загрузить
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Type hints */}
-                        <div style={{ padding: '10px 22px', background: '#FAFAFA', borderBottom: catDocs.length > 0 ? '1px solid #F0F0F0' : 'none', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                          {cat.types.map(t => (
-                            <span key={t} style={{ fontSize: 12, color: '#888', background: '#fff', border: '1px solid #E5E7EB', borderRadius: 20, padding: '2px 10px' }}>
-                              {(cat.typeLabels as Record<string, string>)[t]}
-                            </span>
-                          ))}
-                        </div>
-
-                        {/* Files in category */}
-                        {catDocs.length > 0 && (
-                          <div style={{ padding: '12px 22px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                            {catDocs.map(doc => (
-                              <div key={doc.id} style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#F9FAFB', borderRadius: 10, padding: '10px 14px' }}>
-                                <div style={{ width: 36, height: 36, background: `${cat.color}20`, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, color: cat.color }}>
-                                  {doc.original_name.split('.').pop()?.toUpperCase()}
-                                </div>
-                                <div style={{ flex: 1 }}>
-                                  <div style={{ fontWeight: 500, color: '#1a1a2e', fontSize: 14 }}>{getDocTypeName(doc.document_type)}</div>
-                                  <div style={{ color: '#999', fontSize: 12, marginTop: 2 }}>{doc.original_name} • {(doc.file_size / 1024).toFixed(0)} KB</div>
-                                </div>
-                                {getDocStatusBadge(doc.status)}
-                                <button onClick={() => handleDeleteDocument(doc.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ccc', padding: 4 }}><Trash2 size={15} /></button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+            {/* Stats Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 24 }}>
+              {[
+                { label: 'Документов', value: myDocuments.length, color: '#1a1a2e' },
+                { label: 'Проверено', value: myDocuments.filter(d => d.status === 'approved').length, color: '#10B981' },
+                { label: 'Ожидает', value: myDocuments.filter(d => d.status === 'pending').length, color: '#F59E0B' },
+                { label: 'Хранилище', value: myDocuments.length > 0 ? Math.round(myDocuments.reduce((acc, d) => acc + (d.file_size || 0), 0) / 1024 / 10.24) / 100 + '%' : '0%', color: '#8B5CF6' },
+              ].map((stat, i) => (
+                <div key={i} style={{ background: '#fff', borderRadius: 16, padding: '20px 22px', border: '1px solid #F0F0F0' }}>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: stat.color, marginBottom: 4 }}>{stat.value}</div>
+                  <div style={{ color: '#999', fontSize: 13 }}>{stat.label}</div>
                 </div>
-              );
-            })()}
+              ))}
+            </div>
+
+            {/* Key Docs */}
+            <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #F0F0F0', padding: '18px 22px', marginBottom: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                <CheckCircle size={16} color="#10B981" />
+                <span style={{ fontWeight: 700, color: '#1a1a2e', fontSize: 15 }}>Ключевые документы</span>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                {[
+                  { label: 'CV / Резюме', type: 'cv' },
+                  { label: 'Мотивационное', type: 'motivation_letter' },
+                  { label: 'Рекомендация', type: 'recommendation' },
+                  { label: 'Транскрипт', type: 'transcript' },
+                ].map((key) => {
+                  const doc = myDocuments.find(d => d.document_type === key.type);
+                  return (
+                    <div key={key.type} style={{ border: '1.5px solid #F0F0F0', borderRadius: 12, padding: '12px 14px' }}>
+                      <div style={{ fontSize: 11, color: doc ? (doc.status === 'approved' ? '#10B981' : doc.status === 'rejected' ? '#EF4444' : '#F59E0B') : '#999', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <FileText size={11} />
+                        {doc ? (doc.status === 'approved' ? 'Проверен' : doc.status === 'rejected' ? 'Отклонён' : 'На проверке') : 'Не загружен'}
+                      </div>
+                      <div style={{ fontWeight: 600, color: '#1a1a2e', fontSize: 13 }}>{key.label}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Main layout */}
+            <div style={{ display: 'flex', gap: 20 }}>
+              {/* Left - Categories + Files */}
+              <div style={{ flex: 1 }}>
+                <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #F0F0F0', padding: '18px 22px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                    <span style={{ fontWeight: 700, color: '#1a1a2e', fontSize: 15 }}>Категории</span>
+                    <button
+                      onClick={() => setShowUploadModal(true)}
+                      style={{ display: 'flex', alignItems: 'center', gap: 6, background: ACCENT, border: 'none', borderRadius: 10, padding: '9px 16px', color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: 13 }}
+                    >
+                      <Upload size={14} /> Загрузить
+                    </button>
+                  </div>
+                  <DocHubCategories
+                    myDocuments={myDocuments}
+                    getDocTypeName={getDocTypeName}
+                    getDocStatusBadge={getDocStatusBadge}
+                    handleDeleteDocument={handleDeleteDocument}
+                    setShowUploadModal={setShowUploadModal}
+                    ACCENT={ACCENT}
+                  />
+                </div>
+              </div>
+
+              {/* Right - Admin verification status */}
+              <div style={{ width: 260, flexShrink: 0 }}>
+                <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #F0F0F0', padding: '18px 20px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                    <Shield size={16} color={ACCENT} />
+                    <span style={{ fontWeight: 700, color: '#1a1a2e', fontSize: 15 }}>Проверка документов</span>
+                  </div>
+                  <p style={{ color: '#888', fontSize: 12, marginBottom: 14, lineHeight: 1.5 }}>Администратор проверяет ваши документы и подтверждает их корректность</p>
+
+                  {myDocuments.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '20px 10px', color: '#ccc', fontSize: 13 }}>Загрузите документы для проверки</div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {myDocuments.slice(0, 6).map(doc => (
+                        <div key={doc.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', background: '#F9FAFB', borderRadius: 10 }}>
+                          <div style={{ width: 8, height: 8, borderRadius: '50%', background: doc.status === 'approved' ? '#10B981' : doc.status === 'rejected' ? '#EF4444' : '#F59E0B', flexShrink: 0 }} />
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ fontSize: 12, fontWeight: 600, color: '#1a1a2e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{getDocTypeName(doc.document_type)}</div>
+                            <div style={{ fontSize: 11, color: '#999' }}>{doc.status === 'approved' ? 'Подтверждён ✓' : doc.status === 'rejected' ? 'Отклонён ✗' : 'На проверке...'}</div>
+                          </div>
+                        </div>
+                      ))}
+                      {myDocuments.length > 6 && (
+                        <div style={{ textAlign: 'center', fontSize: 12, color: '#999', paddingTop: 4 }}>+{myDocuments.length - 6} ещё</div>
+                      )}
+                    </div>
+                  )}
+
+                  <div style={{ marginTop: 16, padding: '10px 12px', background: '#FFF8F5', borderRadius: 10, fontSize: 12, color: ACCENT, lineHeight: 1.5 }}>
+                    💡 Статус проверки обновляется администратором. Вы увидите результат здесь.
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
-        {/* ── AI TOOLS ── */}
+                {/* ── AI TOOLS ── */}
         {activeSection === 'ai' && (
           <div style={{ padding: '28px 32px' }}>
             <div style={{ marginBottom: 24 }}>
@@ -1369,8 +1424,8 @@ export const StudentDashboard: React.FC = () => {
       )}
 
       {/* AI Modals */}
-      {showAIPlan && user && <AIPlanModal userName={user.name} onClose={() => { setShowAIPlan(false); completeStep('ai_plan'); }} />}
-      {showPsychTest && <PsychTestModal onClose={() => setShowPsychTest(false)} onComplete={() => completeStep('psych')} />}
+      {showAIPlan && user && <AIPlanModal userName={user.name} onClose={() => { setShowAIPlan(false); if (!completedSteps.includes('ai_plan')) completeStep('ai_plan'); }} />}
+      {showPsychTest && <PsychTestModal onClose={() => setShowPsychTest(false)} onComplete={() => { if (!completedSteps.includes('psych')) completeStep('psych'); }} />}
 
       {/* Chat Widgets */}
       {user && (
