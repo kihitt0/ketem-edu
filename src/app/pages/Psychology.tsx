@@ -274,31 +274,27 @@ export const Psychology: React.FC = () => {
     </div>
 
     {/* Video */}
-    <section className="relative bg-gradient-to-br from-[#1a1a1a] via-[#2C2C2C] to-[#1a1a1a] text-white py-24 overflow-hidden">
-  
-  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    <div className="text-center mb-12">
-      <h2 className="text-5xl font-bold mb-4">
-        Видео о{" "}
-        <span className="bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">
-          психологической поддержке
-        </span>
-      </h2>
-      <p className="text-xl text-gray-300">
-        Узнайте больше о том, как мы помогаем студентам
-      </p>
-    </div>
+    <section className="bg-[#1a1a1a] text-white py-24">
+  <div className="max-w-6xl mx-auto px-4 text-center">
 
-    <div className="bg-[#2a2a2a] p-6 rounded-3xl">
-      <div className="w-full h-[500px] rounded-2xl overflow-hidden">
-        <iframe
-          className="w-full h-full"
-          src="https://www.youtube.com/embed/VRcOn9PPyes"
-          title="Видео"
-          allowFullScreen
-        />
-      </div>
+    <h2 className="text-4xl font-bold mb-4">
+      Видео о{" "}
+      <span className="text-orange-400">
+        психологической поддержке
+      </span>
+    </h2>
+
+    <p className="text-gray-300 mb-10">
+      Узнайте больше о том, как мы помогаем студентам
+    </p>
+
+    <div className="w-full h-[500px] rounded-2xl overflow-hidden">
+      <iframe
+        className="w-full h-full"
+        src="https://www.youtube.com/embed/VRcOn9PPyes"
+        title="Видео"
+        allowFullScreen
+      />
     </div>
 
   </div>
