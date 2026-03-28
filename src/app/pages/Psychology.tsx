@@ -254,43 +254,50 @@ export const Psychology: React.FC = () => {
         </div>
       </section>
 
-      {/* Video Section */}
-      <section className="relative bg-gradient-to-br from-[#1a1a1a] via-[#2C2C2C] to-[#1a1a1a] text-white py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjAyIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40" />
-        
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-5xl font-bold mb-4">
-              Видео о <span className="bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">психологической поддержке</span>
-            </h2>
-            <p className="text-xl text-gray-300">
-              Узнайте больше о том, как мы помогаем студентам справляться с трудностями
-            </p>
-          </motion.div>
+     {/* Video Section */}
+<section className="relative bg-gradient-to-br from-[#1a1a1a] via-[#2C2C2C] to-[#1a1a1a] text-white py-24 overflow-hidden">
+  <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjAyIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRo="100%" height="100%" fill="url(#grid)"/></svg>')] opacity-40" />
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            <div className="bg-gradient-to-br from-[#3a3a3a] to-[#2a2a2a] p-6 md:p-8 rounded-3xl shadow-2xl border border-white/10">
-              <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: '56.25%' }}>
-                <iframe
-                  className="absolute top-0 left-0 w-full h-full"
-                  src="https://youtu.be/VRcOn9PPyes"
-                  title="Видео о психологической поддержке"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            </div>
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    
+    {/* Title */}
+    <div className="text-center mb-12">
+      <h2 className="text-5xl font-bold mb-4">
+        Видео о{" "}
+        <span className="bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">
+          психологической поддержке
+        </span>
+      </h2>
+      <p className="text-xl text-gray-300">
+        Узнайте больше о том, как мы помогаем студентам справляться с трудностями
+      </p>
+    </div>
+
+    {/* Video */}
+    <div className="relative">
+      <div className="bg-gradient-to-br from-[#3a3a3a] to-[#2a2a2a] p-6 md:p-8 rounded-3xl shadow-2xl border border-white/10">
+        
+        {/* ВАЖНО: убрали paddingBottom и сделали фикс высоту */}
+        <div className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/VRcOn9PPyes?rel=0"
+            title="Видео о психологической поддержке"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+
+      </div>
+
+      {/* Декор */}
+      <div className="absolute -top-6 -left-6 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl" />
+      <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-pink-500/20 rounded-full blur-3xl" />
+    </div>
+
+  </div>
+</section>
 
             {/* Decorative elements */}
             <div className="absolute -top-6 -left-6 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl" />
