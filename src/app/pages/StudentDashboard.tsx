@@ -362,9 +362,16 @@ export const StudentDashboard: React.FC = () => {
     { id: 'ai_plan', title: 'AI Персональный план', description: 'AI составит маршрут под твои цели и страны', icon: <Brain size={20} />, status: completedSteps.includes('documents') ? (completedSteps.includes('ai_plan') ? 'completed' : 'active') : 'locked', action: 'Создать план' },
     { id: 'psych', title: 'Психологическая поддержка', description: 'Тест готовности и AI-рекомендации', icon: <Heart size={20} />, status: completedSteps.includes('ai_plan') ? (completedSteps.includes('psych') ? 'completed' : 'active') : 'locked', action: 'Пройти тест' },
     { id: 'apply', title: 'Подача заявок', description: 'Канбан-трекер твоих поступлений', icon: <Target size={20} />, status: completedSteps.includes('psych') ? (completedSteps.includes('apply') ? 'completed' : 'active') : 'locked', action: 'Подать заявку' },
+    { id: 'enrolled', title: 'Зачислен в университет', description: 'Получил оффер и подтвердил поступление', icon: <Star size={20} />, status: completedSteps.includes('apply') ? (completedSteps.includes('enrolled') ? 'completed' : 'active') : 'locked', action: 'Отметить' },
+    { id: 'studying', title: 'Учёба за рубежом', description: 'Успешно переехал и начал учиться', icon: <TrendingUp size={20} />, status: completedSteps.includes('enrolled') ? (completedSteps.includes('studying') ? 'completed' : 'active') : 'locked', action: 'Отметить' },
+    { id: 'graduated', title: 'Окончил университет', description: 'Получил диплом и квалификацию', icon: <CheckCircle size={20} />, status: completedSteps.includes('studying') ? (completedSteps.includes('graduated') ? 'completed' : 'active') : 'locked', action: 'Отметить' },
+    { id: 'job', title: 'Нашёл работу 🎉', description: 'Трудоустроен по специальности — путь завершён!', icon: <Bell size={20} />, status: completedSteps.includes('graduated') ? (completedSteps.includes('job') ? 'completed' : 'active') : 'locked', action: 'Поздравить себя!' },
   ];
 
-  const progress = Math.round((completedSteps.length / journeySteps.length) * 100);
+  // 100% only when ALL steps including 'job' are completed
+  const progress = completedSteps.includes('job')
+    ? 100
+    : Math.min(Math.round((completedSteps.length / journeySteps.length) * 100), 99);
 
   const handleStepAction = (step: JourneyStep) => {
     if (step.status === 'locked') return;
@@ -626,12 +633,15 @@ export const StudentDashboard: React.FC = () => {
               <div style={{ fontSize: 11, color: '#666' }}>Студент</div>
             </div>
           </div>
-          <div style={{ marginTop: 10 }}>
+          <div style={{ marginTop: 10, cursor: 'pointer' }} onClick={() => { setActiveSection('journey'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} title="Открыть мой путь">
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, fontSize: 11, color: '#666' }}>
               <span>Прогресс</span><span style={{ color: ACCENT, fontWeight: 600 }}>{progress}%</span>
             </div>
-            <div style={{ background: '#2e2e2e', borderRadius: 4, height: 5 }}>
-              <div style={{ width: `${progress}%`, height: '100%', background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT2})`, borderRadius: 4, transition: 'width 0.5s' }} />
+            <div style={{ background: '#2e2e2e', borderRadius: 4, height: 5, position: 'relative' }}>
+              <div style={{ width: `${progress}%`, height: '100%', background: progress === 100 ? 'linear-gradient(90deg, #10B981, #059669)' : `linear-gradient(90deg, ${ACCENT}, ${ACCENT2})`, borderRadius: 4, transition: 'width 0.5s' }} />
+            </div>
+            <div style={{ fontSize: 10, color: '#555', marginTop: 4 }}>
+              {progress === 100 ? '🎉 Путь завершён!' : `${completedSteps.length} из ${journeySteps.length} шагов`}
             </div>
           </div>
         </div>
@@ -883,40 +893,139 @@ export const StudentDashboard: React.FC = () => {
         {/* ── DOCUMENT HUB ── */}
         {activeSection === 'documents' && (
           <div style={{ padding: '28px 32px' }}>
-            <div style={{ background: '#fff', borderRadius: 20, padding: 28 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-                <FolderOpen size={22} color={ACCENT} />
-                <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: '#1a1a2e' }}>Document Hub</h2>
-                <span style={{ background: `${ACCENT}18`, color: ACCENT, borderRadius: 20, padding: '2px 10px', fontSize: 12, fontWeight: 600 }}>{myDocuments.length} файлов</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
-                <button onClick={() => setShowUploadModal(true)} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT2})`, border: 'none', borderRadius: 12, padding: '12px 20px', color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: 14, width: 'fit-content' }}>
-                  <Upload size={16} /> Загрузить документ
-                </button>
-              </div>
-              {myDocuments.length > 0 ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {myDocuments.map(doc => (
-                    <div key={doc.id} style={{ background: '#fff', border: '1px solid #eee', borderRadius: 12, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <div style={{ width: 38, height: 38, background: `${ACCENT}15`, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: ACCENT }}>
-                        {doc.original_name.split('.').pop()?.toUpperCase()}
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 500, color: '#1a1a2e', fontSize: 14 }}>{getDocTypeName(doc.document_type)}</div>
-                        <div style={{ color: '#999', fontSize: 12, marginTop: 2 }}>{doc.original_name} • {(doc.file_size / 1024).toFixed(0)} KB</div>
-                      </div>
-                      {getDocStatusBadge(doc.status)}
-                      <button onClick={() => handleDeleteDocument(doc.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ccc', padding: 4 }}><Trash2 size={16} /></button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '40px 20px', color: '#aaa' }}>
-                  <FolderOpen size={40} style={{ margin: '0 auto 12px', display: 'block', opacity: 0.3 }} />
-                  <p>Нет загруженных документов</p>
-                </div>
-              )}
+            <div style={{ marginBottom: 24 }}>
+              <h1 style={{ margin: 0, fontSize: 26, fontWeight: 800, color: '#1a1a2e' }}>Document Hub</h1>
+              <p style={{ margin: '4px 0 0', color: '#888' }}>Все ваши документы в одном месте — загружайте по категориям</p>
             </div>
+
+            {/* Category Cards */}
+            {(() => {
+              const docCategories = [
+                {
+                  id: 'identity',
+                  label: 'Удостоверение личности',
+                  emoji: '🪪',
+                  color: '#3B82F6',
+                  bg: '#EFF6FF',
+                  types: ['passport', 'id_card', 'birth_certificate'],
+                  typeLabels: { passport: 'Паспорт (загранпаспорт)', id_card: 'Удостоверение личности (ИИН)', birth_certificate: 'Свидетельство о рождении' },
+                  description: 'Основные документы, удостоверяющие личность'
+                },
+                {
+                  id: 'education',
+                  label: 'Документы об образовании',
+                  emoji: '🎓',
+                  color: '#10B981',
+                  bg: '#ECFDF5',
+                  types: ['diploma', 'transcript', 'attestat'],
+                  typeLabels: { diploma: 'Диплом о высшем образовании', transcript: 'Транскрипт / Приложение к диплому', attestat: 'Аттестат об окончании школы' },
+                  description: 'Аттестаты, дипломы и академические справки'
+                },
+                {
+                  id: 'language',
+                  label: 'Языковые сертификаты',
+                  emoji: '🌐',
+                  color: '#8B5CF6',
+                  bg: '#F5F3FF',
+                  types: ['language_certificate', 'ielts', 'toefl'],
+                  typeLabels: { language_certificate: 'Языковой сертификат', ielts: 'IELTS', toefl: 'TOEFL / ЕГЭ по языку' },
+                  description: 'IELTS, TOEFL и другие языковые подтверждения'
+                },
+                {
+                  id: 'application',
+                  label: 'Документы для поступления',
+                  emoji: '📝',
+                  color: '#F59E0B',
+                  bg: '#FFFBEB',
+                  types: ['motivation_letter', 'recommendation', 'cv'],
+                  typeLabels: { motivation_letter: 'Мотивационное письмо', recommendation: 'Рекомендательное письмо', cv: 'CV / Резюме' },
+                  description: 'Мотивационные и рекомендательные письма, CV'
+                },
+                {
+                  id: 'photo',
+                  label: 'Фотографии',
+                  emoji: '📷',
+                  color: '#EC4899',
+                  bg: '#FDF2F8',
+                  types: ['photo'],
+                  typeLabels: { photo: 'Фото 3×4 (документальное)' },
+                  description: 'Паспортные фото для документов'
+                },
+                {
+                  id: 'other',
+                  label: 'Прочие документы',
+                  emoji: '📎',
+                  color: '#6B7280',
+                  bg: '#F9FAFB',
+                  types: ['other'],
+                  typeLabels: { other: 'Другое' },
+                  description: 'Медицинские справки, страховки и другое'
+                },
+              ];
+
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {docCategories.map(cat => {
+                    const catDocs = myDocuments.filter(d => cat.types.includes(d.document_type));
+                    return (
+                      <div key={cat.id} style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${cat.bg === '#F9FAFB' ? '#E5E7EB' : cat.bg}`, overflow: 'hidden' }}>
+                        {/* Category Header */}
+                        <div style={{ background: cat.bg, padding: '16px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                            <span style={{ fontSize: 24 }}>{cat.emoji}</span>
+                            <div>
+                              <div style={{ fontWeight: 700, fontSize: 15, color: '#1a1a2e' }}>{cat.label}</div>
+                              <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>{cat.description}</div>
+                            </div>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            {catDocs.length > 0 && (
+                              <span style={{ background: cat.color, color: '#fff', borderRadius: 20, padding: '2px 10px', fontSize: 12, fontWeight: 600 }}>
+                                {catDocs.length} файл{catDocs.length > 1 ? 'а' : ''}
+                              </span>
+                            )}
+                            <button
+                              onClick={() => { setSelectedDocType(cat.types[0]); setShowUploadModal(true); }}
+                              style={{ display: 'flex', alignItems: 'center', gap: 6, background: cat.color, border: 'none', borderRadius: 10, padding: '8px 14px', color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: 13 }}
+                            >
+                              <Upload size={14} /> Загрузить
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Type hints */}
+                        <div style={{ padding: '10px 22px', background: '#FAFAFA', borderBottom: catDocs.length > 0 ? '1px solid #F0F0F0' : 'none', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                          {cat.types.map(t => (
+                            <span key={t} style={{ fontSize: 12, color: '#888', background: '#fff', border: '1px solid #E5E7EB', borderRadius: 20, padding: '2px 10px' }}>
+                              {(cat.typeLabels as Record<string, string>)[t]}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Files in category */}
+                        {catDocs.length > 0 && (
+                          <div style={{ padding: '12px 22px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            {catDocs.map(doc => (
+                              <div key={doc.id} style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#F9FAFB', borderRadius: 10, padding: '10px 14px' }}>
+                                <div style={{ width: 36, height: 36, background: `${cat.color}20`, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, color: cat.color }}>
+                                  {doc.original_name.split('.').pop()?.toUpperCase()}
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                  <div style={{ fontWeight: 500, color: '#1a1a2e', fontSize: 14 }}>{getDocTypeName(doc.document_type)}</div>
+                                  <div style={{ color: '#999', fontSize: 12, marginTop: 2 }}>{doc.original_name} • {(doc.file_size / 1024).toFixed(0)} KB</div>
+                                </div>
+                                {getDocStatusBadge(doc.status)}
+                                <button onClick={() => handleDeleteDocument(doc.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ccc', padding: 4 }}><Trash2 size={15} /></button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </div>
         )}
 
