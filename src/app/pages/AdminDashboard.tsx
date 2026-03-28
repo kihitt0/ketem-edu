@@ -67,7 +67,7 @@ interface User {
   name: string;
   role: 'student' | 'admin';
   registeredDate: string;
-  status: 'active' | 'blocked';
+  status: 'pending' | 'approved' | 'active' | 'blocked';
   phone?: string;
   country?: string;
   date_of_birth?: string;
@@ -434,7 +434,7 @@ export const AdminDashboard: React.FC = () => {
           name: u.name,
           role: u.role,
           registeredDate: u.created_at?.split('T')[0] || new Date().toISOString().split('T')[0],
-          status: u.is_active ? 'active' : 'blocked',
+          status: u.status || (u.is_active ? 'approved' : 'blocked'),
           phone: u.phone || '',
           country: u.country || '',
           date_of_birth: u.date_of_birth?.split('T')[0] || ''
@@ -800,31 +800,38 @@ export const AdminDashboard: React.FC = () => {
   };
 
   // Users handlers
+  const handleApproveUser = async (id: string) => {
+    try {
+      const token = localStorage.getItem('ketem_token');
+      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'approved', is_active: true })
+      });
+      if (response.ok) {
+        setUsers(users.map(u => u.id === id ? { ...u, status: 'approved' } : u));
+      }
+    } catch (error) { console.error('Failed to approve user:', error); }
+  };
+
   const handleUserStatusToggle = async (id: string) => {
     const user = users.find(u => u.id === id);
     if (!user) return;
 
-    const newStatus = user.status === 'active' ? false : true;
+    const newStatus = user.status === 'blocked' ? 'approved' : 'blocked';
+    const newIsActive = newStatus !== 'blocked';
 
     try {
       const token = localStorage.getItem('ketem_token');
       const response = await fetch(`http://localhost:3000/api/users/${id}`, {
         method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ is_active: newStatus })
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus, is_active: newIsActive })
       });
-
       if (response.ok) {
-        setUsers(users.map(u =>
-          u.id === id ? { ...u, status: newStatus ? 'active' : 'blocked' } : u
-        ));
+        setUsers(users.map(u => u.id === id ? { ...u, status: newStatus } : u));
       }
-    } catch (error) {
-      console.error('Failed to update user status:', error);
-    }
+    } catch (error) { console.error('Failed to update user status:', error); }
   };
 
   const handleUserRoleChange = async (id: string, newRole: 'student' | 'admin') => {
@@ -912,7 +919,8 @@ export const AdminDashboard: React.FC = () => {
       total: users.length,
       students: users.filter(u => u.role === 'student').length,
       admins: users.filter(u => u.role === 'admin').length,
-      active: users.filter(u => u.status === 'active').length,
+      active: users.filter(u => u.status === 'approved' || u.status === 'active').length,
+      pending: users.filter(u => u.status === 'pending').length,
       blocked: users.filter(u => u.status === 'blocked').length
     },
     consultations: {
@@ -1028,6 +1036,7 @@ export const AdminDashboard: React.FC = () => {
               roleFilter={roleFilter}
               setRoleFilter={setRoleFilter}
               onStatusToggle={handleUserStatusToggle}
+              onApprove={handleApproveUser}
               onRoleChange={handleUserRoleChange}
               onViewDetails={handleViewUserDetails}
             />
@@ -1742,6 +1751,7 @@ interface UsersTabProps {
   roleFilter: string;
   setRoleFilter: (filter: string) => void;
   onStatusToggle: (id: string) => void;
+  onApprove: (id: string) => void;
   onRoleChange: (id: string, role: 'student' | 'admin') => void;
   onViewDetails: (user: User) => void;
 }
@@ -1754,6 +1764,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
   roleFilter,
   setRoleFilter,
   onStatusToggle,
+  onApprove,
   onRoleChange,
   onViewDetails
 }) => {
@@ -1764,7 +1775,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
         {[
           { label: 'Всего', value: stats.total, color: 'from-orange-500 to-amber-500', icon: Users },
           { label: 'Студенты', value: stats.students, color: 'from-blue-500 to-cyan-500', icon: GraduationCap },
-          { label: 'Админы', value: stats.admins, color: 'from-purple-500 to-pink-500', icon: Shield },
+          { label: 'Ожидают одобрения', value: stats.pending ?? 0, color: 'from-yellow-500 to-orange-400', icon: Clock },
           { label: 'Активные', value: stats.active, color: 'from-green-500 to-emerald-500', icon: CheckCircle }
         ].map((stat, idx) => {
           const Icon = stat.icon;
@@ -1859,9 +1870,13 @@ const UsersTab: React.FC<UsersTabProps> = ({
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-3 py-1 text-xs rounded-full font-medium ${
-                      u.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      u.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                      u.status === 'approved' || u.status === 'active' ? 'bg-green-100 text-green-800' :
+                      'bg-red-100 text-red-800'
                     }`}>
-                      {u.status === 'active' ? 'Активен' : 'Заблокирован'}
+                      {u.status === 'pending' ? '⏳ Ожидает' :
+                       u.status === 'approved' || u.status === 'active' ? 'Активен' :
+                       'Заблокирован'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
@@ -1873,16 +1888,26 @@ const UsersTab: React.FC<UsersTabProps> = ({
                       >
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button
-                        onClick={() => onStatusToggle(u.id)}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                          u.status === 'active'
-                            ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                            : 'bg-green-100 text-green-700 hover:bg-green-200'
-                        }`}
-                      >
-                        {u.status === 'active' ? 'Заблокировать' : 'Разблокировать'}
-                      </button>
+                      {u.status === 'pending' && (
+                        <button
+                          onClick={() => onApprove(u.id)}
+                          className="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-green-100 text-green-700 hover:bg-green-200"
+                        >
+                          ✓ Одобрить
+                        </button>
+                      )}
+                      {u.status !== 'pending' && (
+                        <button
+                          onClick={() => onStatusToggle(u.id)}
+                          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                            u.status === 'approved' || u.status === 'active'
+                              ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                              : 'bg-green-100 text-green-700 hover:bg-green-200'
+                          }`}
+                        >
+                          {u.status === 'approved' || u.status === 'active' ? 'Заблокировать' : 'Разблокировать'}
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
