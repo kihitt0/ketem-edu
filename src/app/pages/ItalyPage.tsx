@@ -7,6 +7,9 @@ const PER_PAGE = 9;
 
 export const ItalyPage: React.FC = () => {
   const [page, setPage] = React.useState(0);
+  const [qsFilter, setQsFilter] = React.useState<string>('all');
+  const [topFilter, setTopFilter] = React.useState<string>('all');
+  const [profFilter, setProfFilter] = React.useState<string>('all');
   React.useEffect(() => { window.scrollTo(0, 0); }, []);
 
     const universities = [
@@ -130,7 +133,7 @@ export const ItalyPage: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
+            className="text-center mb-8"
           >
             <h2 className="text-4xl font-bold mb-4">
               Топ университеты <span className="text-orange-500">Италии</span>
@@ -140,77 +143,193 @@ export const ItalyPage: React.FC = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {universities.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE).map((uni, index) => (
-              <motion.div
-                key={page * PER_PAGE + index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -8 }}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden group"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={uni.image}
-                    alt={uni.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
-                    <Star className="w-4 h-4" />
-                    {uni.ranking}
-                  </div>
+          {/* ── Filters ── */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-8">
+            <div className="flex flex-wrap gap-6">
+              {/* QS Rank filter */}
+              <div>
+                <div className="text-xs font-semibold text-gray-500 uppercase mb-2">QS Рейтинг</div>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: 'all', label: 'Все' },
+                    { id: 'top200', label: 'ТОП 200' },
+                    { id: 'top500', label: 'ТОП 500' },
+                    { id: 'top1000', label: 'ТОП 1000' },
+                    { id: 'noqs', label: 'Без рейтинга QS' },
+                  ].map(f => (
+                    <button
+                      key={f.id}
+                      onClick={() => { setQsFilter(f.id); setPage(0); }}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${qsFilter === f.id ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'}`}
+                    >{f.label}</button>
+                  ))}
                 </div>
-                <div className="p-6">
-                  <h3 className="font-bold text-xl mb-3 text-gray-900 line-clamp-2">{uni.name}</h3>
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
-                      <span className="text-sm">{uni.city}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <DollarSign className="w-4 h-4 text-orange-500 flex-shrink-0" />
-                      <span className="text-sm font-medium">{uni.tuition}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Award className="w-4 h-4 text-orange-500 flex-shrink-0" />
-                      <span className="text-sm font-medium">QS: {uni.qs} · {uni.rank}</span>
-                    </div>
-                    {uni.info && (
-                      <p className="text-sm text-gray-500 mt-2 leading-relaxed">{uni.info}</p>
-                    )}
-                  </div>
+              </div>
+
+              {/* Top rank filter */}
+              <div>
+                <div className="text-xs font-semibold text-gray-500 uppercase mb-2">Место в Италии</div>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: 'all', label: 'Все' },
+                    { id: 'top5', label: 'ТОП 5' },
+                    { id: 'top10', label: 'ТОП 10' },
+                    { id: 'top15', label: 'ТОП 15' },
+                  ].map(f => (
+                    <button
+                      key={f.id}
+                      onClick={() => { setTopFilter(f.id); setPage(0); }}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${topFilter === f.id ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'}`}
+                    >{f.label}</button>
+                  ))}
                 </div>
-              </motion.div>
-            ))}
+              </div>
+
+              {/* Profession filter */}
+              <div>
+                <div className="text-xs font-semibold text-gray-500 uppercase mb-2">Направление</div>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: 'all', label: 'Все' },
+                    { id: 'medicine', label: '🩺 Медицина' },
+                    { id: 'engineering', label: '⚙️ Инженерия/IT' },
+                    { id: 'business', label: '📊 Бизнес/Экономика' },
+                    { id: 'architecture', label: '🏛️ Архитектура/Дизайн' },
+                    { id: 'law', label: '⚖️ Право' },
+                    { id: 'humanities', label: '📚 Гуманитарные' },
+                  ].map(f => (
+                    <button
+                      key={f.id}
+                      onClick={() => { setProfFilter(f.id); setPage(0); }}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${profFilter === f.id ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'}`}
+                    >{f.label}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Пагинация */}
-          <div className="flex items-center justify-center gap-2 mt-12">
-            <button
-              onClick={() => { setPage(p => Math.max(0, p - 1)); window.scrollTo({top: 0, behavior: 'smooth'}); }}
-              disabled={page === 0}
-              className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all"
-            >
-              ←
-            </button>
-            {Array.from({ length: Math.ceil(universities.length / PER_PAGE) }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => { setPage(i); window.scrollTo({top: 0, behavior: 'smooth'}); }}
-                className={`w-10 h-10 rounded-lg font-bold transition-all ${page === i ? 'bg-orange-500 text-white shadow-lg' : 'bg-white text-gray-600 border border-gray-200 hover:bg-orange-50 hover:border-orange-400'}`}
-              >
-                {i + 1}
-              </button>
-            ))}
-            <button
-              onClick={() => { setPage(p => Math.min(Math.ceil(universities.length / PER_PAGE) - 1, p + 1)); window.scrollTo({top: 0, behavior: 'smooth'}); }}
-              disabled={page === Math.ceil(universities.length / PER_PAGE) - 1}
-              className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all"
-            >
-              →
-            </button>
-          </div>
+          {/* Filter logic */}
+          {(() => {
+            const getQsNum = (qs: string): number => {
+              if (qs === 'Не входит') return 9999;
+              const n = parseInt(qs.replace(/[^0-9]/g, ''));
+              return isNaN(n) ? 9999 : n;
+            };
+            const getTopNum = (rank: string): number => {
+              const m = rank.match(/(\d+)/);
+              return m ? parseInt(m[1]) : 99;
+            };
+            const profKeywords: Record<string, string[]> = {
+              medicine: ['медицин', 'фармац', 'ветерин', 'биолог', 'health'],
+              engineering: ['инженер', 'it', 'технич', 'программ', 'политехн', 'математик', 'физик', 'компьют'],
+              business: ['бизнес', 'экономик', 'финанс', 'менеджмент', 'маркет'],
+              architecture: ['архитектур', 'дизайн', 'искусств', 'iuav', 'iulm'],
+              law: ['прав', 'юрид', 'law'],
+              humanities: ['гуманитарн', 'язык', 'международн', 'политолог', 'психолог', 'социальн'],
+            };
+
+            const filtered = universities.filter(uni => {
+              const qsNum = getQsNum(uni.qs);
+              if (qsFilter === 'top200' && qsNum > 200) return false;
+              if (qsFilter === 'top500' && qsNum > 500) return false;
+              if (qsFilter === 'top1000' && qsNum > 1000) return false;
+              if (qsFilter === 'noqs' && qsNum !== 9999) return false;
+
+              const topNum = getTopNum(uni.rank);
+              if (topFilter === 'top5' && topNum > 5) return false;
+              if (topFilter === 'top10' && topNum > 10) return false;
+              if (topFilter === 'top15' && topNum > 15) return false;
+
+              if (profFilter !== 'all') {
+                const keywords = profKeywords[profFilter] || [];
+                const searchStr = (uni.name + ' ' + uni.info).toLowerCase();
+                if (!keywords.some(k => searchStr.includes(k))) return false;
+              }
+
+              return true;
+            });
+
+            const totalPages = Math.ceil(filtered.length / PER_PAGE);
+            const safePage = Math.min(page, Math.max(0, totalPages - 1));
+            const pageUnis = filtered.slice(safePage * PER_PAGE, safePage * PER_PAGE + PER_PAGE);
+
+            return (
+              <>
+                {filtered.length === 0 ? (
+                  <div className="text-center py-16 text-gray-400">
+                    <GraduationCap className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                    <p className="text-lg">Нет университетов по выбранным фильтрам</p>
+                    <button onClick={() => { setQsFilter('all'); setTopFilter('all'); setProfFilter('all'); }} className="mt-4 text-orange-500 hover:underline text-sm">Сбросить фильтры</button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="text-sm text-gray-500 mb-4">Найдено: <span className="font-semibold text-gray-900">{filtered.length}</span> университетов</div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {pageUnis.map((uni, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          whileHover={{ y: -5 }}
+                          className="bg-white rounded-2xl shadow-md overflow-hidden group border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all"
+                        >
+                          <div className="p-6">
+                            <div className="flex items-start justify-between mb-3">
+                              <div className="flex-1 min-w-0">
+                                <h3 className="font-bold text-lg mb-1 text-gray-900 leading-tight">{uni.name}</h3>
+                                <div className="flex items-center gap-1 text-gray-500 text-sm">
+                                  <MapPin className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
+                                  {uni.city}
+                                </div>
+                              </div>
+                              <span className="ml-3 flex-shrink-0 bg-orange-50 text-orange-600 border border-orange-100 px-2.5 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                                {uni.ranking}
+                              </span>
+                            </div>
+                            <div className="space-y-2 mb-4">
+                              <div className="flex items-center gap-2 text-gray-600">
+                                <DollarSign className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                                <span className="text-sm font-medium">{uni.tuition}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-gray-600">
+                                <Award className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                                <span className="text-sm">QS: {uni.qs} · {uni.rank}</span>
+                              </div>
+                            </div>
+                            {uni.info && (
+                              <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">{uni.info}</p>
+                            )}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                    {/* Pagination */}
+                    <div className="flex items-center justify-center gap-2 mt-12">
+                      <button
+                        onClick={() => { setPage(p => Math.max(0, p - 1)); window.scrollTo({top: 0, behavior: 'smooth'}); }}
+                        disabled={safePage === 0}
+                        className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all"
+                      >←</button>
+                      {Array.from({ length: totalPages }).map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => { setPage(i); window.scrollTo({top: 0, behavior: 'smooth'}); }}
+                          className={`w-10 h-10 rounded-lg font-bold transition-all ${safePage === i ? 'bg-orange-500 text-white shadow-lg' : 'bg-white text-gray-600 border border-gray-200 hover:bg-orange-50 hover:border-orange-400'}`}
+                        >{i + 1}</button>
+                      ))}
+                      <button
+                        onClick={() => { setPage(p => Math.min(totalPages - 1, p + 1)); window.scrollTo({top: 0, behavior: 'smooth'}); }}
+                        disabled={safePage >= totalPages - 1}
+                        className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all"
+                      >→</button>
+                    </div>
+                  </>
+                )}
+              </>
+            );
+          })()}
         </div>
       </section>
 
