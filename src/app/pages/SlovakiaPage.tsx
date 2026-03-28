@@ -7,6 +7,8 @@ const PER_PAGE = 9;
 
 export const SlovakiaPage: React.FC = () => {
   const [page, setPage] = React.useState(0);
+  const [qsFilter, setQsFilter] = React.useState('all');
+  const [profFilter, setProfFilter] = React.useState('all');
   React.useEffect(() => { window.scrollTo(0, 0); }, []);
 
     const universities = [
@@ -92,23 +94,84 @@ export const SlovakiaPage: React.FC = () => {
       {/* Universities Grid */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">
-              Топ университеты <span className="text-orange-500">Словакии</span>
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Качественное образование по доступным ценам в сердце Европы
-            </p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="text-4xl font-bold mb-4">Топ университеты <span className="text-orange-500">Словакии</span></h2>
+            <p className="text-gray-600 text-lg">Качественное образование по доступным ценам в сердце Европы</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {universities.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE).map((uni, index) => (
+          {/* Filters */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-8">
+            <div className="flex flex-wrap gap-6">
+              <div>
+                <div className="text-xs font-semibold text-gray-500 uppercase mb-2">QS Рейтинг</div>
+                <div className="flex flex-wrap gap-2">
+                  {[{ id: 'all', label: 'Все' }, { id: 'top700', label: 'ТОП 700' }, { id: 'top1000', label: 'ТОП 1000' }, { id: 'noqs', label: 'Без QS' }].map(f => (
+                    <button key={f.id} onClick={() => { setQsFilter(f.id); setPage(0); }}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${qsFilter === f.id ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'}`}>{f.label}</button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs font-semibold text-gray-500 uppercase mb-2">Направление</div>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: 'all', label: 'Все' }, { id: 'medicine', label: '🩺 Медицина' }, { id: 'engineering', label: '⚙️ Инженерия/IT' },
+                    { id: 'business', label: '📊 Бизнес/Экономика' }, { id: 'architecture', label: '🏛️ Архитектура/Дизайн' },
+                    { id: 'law', label: '⚖️ Право' }, { id: 'humanities', label: '📚 Гуманитарные' },
+                  ].map(f => (
+                    <button key={f.id} onClick={() => { setProfFilter(f.id); setPage(0); }}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${profFilter === f.id ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'}`}>{f.label}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Filter logic */}
+          {(() => {
+            const getQsNum = (qs: string): number => {
+              if (qs === 'Не входит') return 9999;
+              const n = parseInt(qs.replace(/[^\d]/g, ''));
+              return isNaN(n) ? 9999 : n;
+            };
+            const profKeywords: Record<string, string[]> = {
+              medicine:     ['медицин', 'фармац', 'ветерин', 'биолог'],
+              engineering:  ['инженери', 'it', 'технич', 'электр', 'информатик', 'автоматиз', 'коммуникац'],
+              business:     ['бизнес', 'экономик', 'финанс', 'менеджмент', 'туризм'],
+              architecture: ['архитектур', 'дизайн', 'медиа', 'коммуникации'],
+              law:          ['право', 'юрид'],
+              humanities:   ['гуманитарн', 'педагогик', 'психолог', 'международн', 'филолог', 'журналист', 'история', 'аграрн', 'сельск'],
+            };
+            const filtered = universities.filter(uni => {
+              const qsNum = getQsNum(uni.qs);
+              if (qsFilter === 'top700'  && qsNum > 700)  return false;
+              if (qsFilter === 'top1000' && qsNum > 1000) return false;
+              if (qsFilter === 'noqs'   && qsNum !== 9999) return false;
+              if (profFilter !== 'all') {
+                const kws = profKeywords[profFilter] || [];
+                const str = (uni.info + ' ' + (uni.programs || []).join(' ')).toLowerCase();
+                if (!kws.some(k => str.includes(k))) return false;
+              }
+              return true;
+            });
+            const totalPages = Math.ceil(filtered.length / PER_PAGE);
+            const safePage = Math.min(page, Math.max(0, totalPages - 1));
+            const pageUnis = filtered.slice(safePage * PER_PAGE, safePage * PER_PAGE + PER_PAGE);
+            return (
+              <>
+                {filtered.length === 0 ? (
+                  <div className="text-center py-16 text-gray-400">
+                    <GraduationCap className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                    <p className="text-lg">Нет университетов по выбранным фильтрам</p>
+                    <button onClick={() => { setQsFilter('all'); setProfFilter('all'); }} className="mt-4 text-orange-500 hover:underline text-sm">Сбросить фильтры</button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="text-sm text-gray-500 mb-4">Найдено: <span className="font-semibold text-gray-900">{filtered.length}</span> университетов</div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {pageUnis.map((uni, index) => (
               <motion.div
-                key={page * PER_PAGE + index}
+                key={index}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
@@ -155,34 +218,24 @@ export const SlovakiaPage: React.FC = () => {
                 </div>
               </motion.div>
             ))}
-          </div>
-
-          {/* Пагинация */}
-          <div className="flex items-center justify-center gap-2 mt-12">
-            <button
-              onClick={() => { setPage(p => Math.max(0, p - 1)); window.scrollTo({top: 0, behavior: 'smooth'}); }}
-              disabled={page === 0}
-              className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all"
-            >
-              ←
-            </button>
-            {Array.from({ length: Math.ceil(universities.length / PER_PAGE) }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => { setPage(i); window.scrollTo({top: 0, behavior: 'smooth'}); }}
-                className={`w-10 h-10 rounded-lg font-bold transition-all ${page === i ? 'bg-orange-500 text-white shadow-lg' : 'bg-white text-gray-600 border border-gray-200 hover:bg-orange-50 hover:border-orange-400'}`}
-              >
-                {i + 1}
-              </button>
-            ))}
-            <button
-              onClick={() => { setPage(p => Math.min(Math.ceil(universities.length / PER_PAGE) - 1, p + 1)); window.scrollTo({top: 0, behavior: 'smooth'}); }}
-              disabled={page === Math.ceil(universities.length / PER_PAGE) - 1}
-              className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all"
-            >
-              →
-            </button>
-          </div>
+                    </div>
+                    {totalPages > 1 && (
+                      <div className="flex items-center justify-center gap-2 mt-12">
+                        <button onClick={() => { setPage(p => Math.max(0, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }} disabled={safePage === 0}
+                          className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all">←</button>
+                        {Array.from({ length: totalPages }).map((_, i) => (
+                          <button key={i} onClick={() => { setPage(i); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                            className={`w-10 h-10 rounded-lg font-bold transition-all ${safePage === i ? 'bg-orange-500 text-white shadow-lg' : 'bg-white text-gray-600 border border-gray-200 hover:bg-orange-50 hover:border-orange-400'}`}>{i + 1}</button>
+                        ))}
+                        <button onClick={() => { setPage(p => Math.min(totalPages - 1, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }} disabled={safePage >= totalPages - 1}
+                          className="px-4 py-2 rounded-lg bg-white shadow border border-gray-200 text-gray-600 font-medium disabled:opacity-30 hover:bg-orange-50 hover:border-orange-400 transition-all">→</button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </>
+            );
+          })()}
         </div>
       </section>
 
