@@ -16,7 +16,7 @@ export function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [error, setError] = useState("");
+  const [registrationPending, setRegistrationPending] = useState(false);
   const [loading, setLoading] = useState(false);
   const { login, register, user } = useAuth();
   const navigate = useNavigate();
@@ -49,7 +49,8 @@ export function AuthPage() {
         }
         const success = await register(email, password, name);
         if (success) {
-          navigate("/dashboard");
+          // After registration user needs admin approval
+          setRegistrationPending(true);
         } else {
           setError("Ошибка регистрации. Возможно, email уже используется.");
         }
@@ -83,6 +84,35 @@ export function AuthPage() {
         className="max-w-md w-full"
       >
         <div className="bg-white rounded-2xl shadow-xl p-8">
+
+          {registrationPending ? (
+            <div className="text-center">
+              <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-4xl">⏳</span>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                Заявка отправлена!
+              </h2>
+              <p className="text-gray-600 mb-4">
+                Ваш аккаунт создан и ожидает активации администратором. После одобрения вы получите доступ к личному кабинету.
+              </p>
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6 text-sm text-left">
+                <p className="font-semibold text-orange-800 mb-1">📋 Что дальше?</p>
+                <ul className="text-orange-700 space-y-1 list-disc list-inside">
+                  <li>Администратор проверит вашу заявку</li>
+                  <li>Вам придёт уведомление об активации</li>
+                  <li>После активации — войдите снова</li>
+                </ul>
+              </div>
+              <button
+                onClick={() => { setRegistrationPending(false); setIsLogin(true); setError(""); }}
+                className="w-full bg-[#FF6B35] text-white py-3 rounded-lg hover:bg-[#E55A2B] transition-colors"
+              >
+                Войти в аккаунт
+              </button>
+            </div>
+          ) : (
+            <>
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
               {isLogin ? "Войти в аккаунт" : "Создать аккаунт"}
@@ -228,6 +258,8 @@ export function AuthPage() {
                 : "Уже есть аккаунт? Войти"}
             </button>
           </div>
+          </>
+          )}
         </div>
       </motion.div>
     </div>
