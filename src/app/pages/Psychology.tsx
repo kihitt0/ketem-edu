@@ -291,7 +291,7 @@ export const Psychology: React.FC = () => {
     <div className="w-full h-[500px] rounded-2xl overflow-hidden">
       <iframe
         className="w-full h-full"
-        src="https://www.youtube.com/embed/VRcOn9PPyes"
+        src="https://youtu.be/VRcOn9PPyes"
         title="Видео"
         allowFullScreen
       />
